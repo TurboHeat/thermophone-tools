@@ -1,118 +1,115 @@
-%% Input material 
-
-clear all
-
-%% Air 
+function Material_builder
+%% Air
 
 % rho - Density
-rhoo=1.20;
+rhoo = 1.20;
 % B - Bulk Moduls
-Bo=1.01*10^5;
+Bo = 1.01 * 10^5;
 % alphaT - coefficient of volumetric expansion
-alphaTo=3.33*10^-3;
+alphaTo = 3.33 * 10^-3;
 % lambda - first viscosity coefficient / first Lame elastic coefficient
-lambdao=1.68*10^-5;
+lambdao = 1.68 * 10^-5;
 % meu - Second viscosity coefficient / second Lame elastic coefficient
-meuo=5.61*10^-6;
+meuo = 5.61 * 10^-6;
 % Cp - Specific heat at constant pressure
-Cpo=9.96*10^2;
+Cpo = 9.96 * 10^2;
 % Cv - Specific heat at constant volume
-Cvo=7.17*10^2;
+Cvo = 7.17 * 10^2;
 % kappa - Thermal conductivity
-kappao=2.62*10^-2;
+kappao = 2.62 * 10^-2;
 % Heat-flux time-lag
-tau_qo=10^-10;
+tau_qo = 10^-10;
 % Temperature time-lag
-tau_To=10^-10;
+tau_To = 10^-10;
 
 save Air.mat
 
-clear all
+clearvars
 
 %% Titanium
 % https://www.azom.com/properties.aspx?ArticleID=712
 % rho - Density
-rhoo=(4.505+4.515)*(10^3)/2;
+rhoo = (4.505 + 4.515) * (10^3) / 2;
 % B - Bulk Moduls
-Bo=(111+135)*(10^9)/2;
+Bo = (111 + 135) * (10^9) / 2;
 % Y - Young's Modulus
-Y=(100+105)*(10^9)/2;
+Y = (100 + 105) * (10^9) / 2;
 % lambda - first viscosity coefficient / first Lame elastic coefficient
-lambdao=3*Bo*(3*Bo-Y)/(9*Bo-Y); %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
+lambdao = 3 * Bo * (3 * Bo - Y) / (9 * Bo - Y); %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
 % meu - Second viscosity coefficient / second Lame elastic coefficient
-meuo=(3/2)*(Bo-lambdao);       %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
+meuo = (3 / 2) * (Bo - lambdao); %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
 % alphaT - coefficient of volumetric expansion
-alphaTo=(8.5+9.3)*(10^-6)/2;
+alphaTo = (8.5 + 9.3) * (10^-6) / 2;
 % Cp - Specific heat at constant pressure
-Cpo=(539+541)/2;
+Cpo = (539 + 541) / 2;
 % Cv - Specific heat at constant volume
-Cvo=(539+541)/2;
+Cvo = (539 + 541) / 2;
 % kappa - Thermal conductivity
-kappao=(16.3+18)/2;
+kappao = (16.3 + 18) / 2;
 % Heat-flux time-lag
-tau_qo=10^-10;
+tau_qo = 10^-10;
 % Temperature time-lag
-tau_To=10^-10;
+tau_To = 10^-10;
 
 save Titanium.mat
 
-clear all
+clearvars
 
 %% Gold
 % https://www.azom.com/properties.aspx?ArticleID=598
 % rho - Density
-rhoo=(19.25+19.35)*(10^3)/2;
+rhoo = (19.25 + 19.35) * (10^3) / 2;
 % B - Bulk Moduls
-Bo=(148+180)*(10^9)/2;
+Bo = (148 + 180) * (10^9) / 2;
 % Y - Young's Modulus
-Y=(76+81)*(10^9)/2;
+Y = (76 + 81) * (10^9) / 2;
 % lambda - first viscosity coefficient / first Lame elastic coefficient
-lambdao=3*Bo*(3*Bo-Y)/(9*Bo-Y); %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
+lambdao = 3 * Bo * (3 * Bo - Y) / (9 * Bo - Y); %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
 % meu - Second viscosity coefficient / second Lame elastic coefficient
-meuo=(3/2)*(Bo-lambdao);       %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
+meuo = (3 / 2) * (Bo - lambdao); %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
 % alphaT - coefficient of volumetric expansion
-alphaTo=(13.5+14.5)*(10^-6)/2;
+alphaTo = (13.5 + 14.5) * (10^-6) / 2;
 % Cp - Specific heat at constant pressure
-Cpo=(125+135)/2;
+Cpo = (125 + 135) / 2;
 % Cv - Specific heat at constant volume
-Cvo=(125+135)/2;
+Cvo = (125 + 135) / 2;
 % kappa - Thermal conductivity
-kappao=(305+319)/2;
+kappao = (305 + 319) / 2;
 % Heat-flux time-lag
-tau_qo=10^-10;
+tau_qo = 10^-10;
 % Temperature time-lag
-tau_To=10^-10;
+tau_To = 10^-10;
 
 save Gold.mat
-
-clear all
+clearvars
 
 %% Silica (Silicon Dioxide)
 %Source:https://www.azom.com/properties.aspx?ArticleID=1114
 % rho - Density
-rhoo=(10^3)*(2.17+2.65)/2; %averaging min and max values
+rhoo = (10^3) * (2.17 + 2.65) / 2; %averaging min and max values
 % B - Bulk Moduls
-Bo=(33.5+36.8)*(10^9)/2;
+Bo = (33.5 + 36.8) * (10^9) / 2;
 % Y - Young's Modulus
-Y=(66.3+74.8)*(10^9)/2;
+Y = (66.3 + 74.8) * (10^9) / 2;
 % alphaT - coefficient of volumetric expansion
-alphaTo=(0.55+0.75)*(10^-6)/2;
+alphaTo = (0.55 + 0.75) * (10^-6) / 2;
 % lambda - first viscosity coefficient / first Lame elastic coefficient
-lambdao=3*Bo*(3*Bo-Y)/(9*Bo-Y); %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
+lambdao = 3 * Bo * (3 * Bo - Y) / (9 * Bo - Y); %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
 % meu - Second viscosity coefficient / second Lame elastic coefficient
-meuo=(3/2)*(Bo-lambdao);       %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
+meuo = (3 / 2) * (Bo - lambdao); %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
 % Cp - Specific heat at constant pressure
-Cpo=(680+730)/2;
+Cpo = (680 + 730) / 2;
 % Cv - Specific heat at constant volume
-Cvo=(680+730)/2;
+Cvo = (680 + 730) / 2;
 % kappa - Thermal conductivity
-kappao=(1.3+1.5)/2;
+kappao = (1.3 + 1.5) / 2;
 % Heat-flux time-lag
-tau_qo=10^-10;
+tau_qo = 10^-10;
 % Temperature time-lag
-tau_To=10^-10;
+tau_To = 10^-10;
 
 save Silica.mat
+clearvars % Iliya: @Shimon, is this needed here?
 
 %% Silica Aerogel
 %Source:http://www.i-asem.org/publication_conf/asem13/068.M3B.2.MS534_592F.pdf
@@ -120,26 +117,26 @@ save Silica.mat
 %Source:http://www.ikprress.org/index.php/JAPSI/article/view/2923
 %Source:https://www.diva-portal.org/smash/get/diva2:533307/FULLTEXT01.pdf
 % rho - Density
-rhoo=3; %averaging min and max values
+rhoo = 3; %averaging min and max values
 % B - Bulk Moduls
-Bo=(10^9)*((rhoo^3.00)+(rhoo^3.15))/2;
+Bo = (10^9) * ((rhoo^3.00) + (rhoo^3.15)) / 2;
 % Y - Young's Modulus
-Y=(9.638)*(10^-7)*(rhoo^3.378);
+Y = (9.638) * (10^-7) * (rhoo^3.378);
 % alphaT - coefficient of volumetric expansion
-alphaTo=(10^-6);
+alphaTo = (10^-6);
 % lambda - first viscosity coefficient / first Lame elastic coefficient
-lambdao=3*Bo*(3*Bo-Y)/(9*Bo-Y); %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
+lambdao = 3 * Bo * (3 * Bo - Y) / (9 * Bo - Y); %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
 % meu - Second viscosity coefficient / second Lame elastic coefficient
-meuo=(3/2)*(Bo-lambdao);       %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
+meuo = (3 / 2) * (Bo - lambdao); %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
 % Cp - Specific heat at constant pressure
-Cpo=(840)/2;
+Cpo = (840) / 2;
 % Cv - Specific heat at constant volume
-Cvo=(840)/2;
+Cvo = (840) / 2;
 % kappa - Thermal conductivity
-kappao=0.014;
+kappao = 0.014;
 % Heat-flux time-lag
-tau_qo=10^-10;
+tau_qo = 10^-10;
 % Temperature time-lag
-tau_To=10^-10;
+tau_To = 10^-10;
 
 save Silica_aerogel.mat
