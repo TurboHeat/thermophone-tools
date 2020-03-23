@@ -51,22 +51,23 @@ vM = pM;
 qM = pM;
 T_Mm = pM;
 
-BCI = ones(4, N_layers);
+% BCI = mp(ones(4, N_layers));
 
-for j = 1:maxO
+[kay1, kay2] = deal(zeros(maxO,1));
+for k = 1:maxO % TODO: try to parfor-ize
   [BCI, Hamat, w1_c, w2_c] = Backend_codes.T_system_solver( ...
-    Omega(j), invHa_f, invHb_f, Ha_f, Hb_f, w1_f, w2_f, S_f, MDM, N_layers, cumLo, aaN, ccN, bb1, dd1, Dimensions);
+    Omega(k), invHa_f, invHb_f, Ha_f, Hb_f, w1_f, w2_f, S_f, MDM, N_layers, cumLo, aaN, ccN, bb1, dd1, Dimensions);
   
   for que = 1:Nq % x-position loop
     
     [field, interval] = Backend_codes.Interrogation( ...
-      Hamat, Hb_f, S_f, cumLo, Posx(que), N_layers, BCI, T_mean, MDM, Omega(j), w1_c, w2_c);
+      Hamat, Hb_f, S_f, cumLo, Posx(que), N_layers, BCI, T_mean, MDM, Omega(k), w1_c, w2_c);
     
-    p(j, que) = field(1, :);
-    v(j, que) = field(2, :);
-    q(j, que) = field(3, :);
-    T(j, que) = field(4, :);
-    T_m(j, que) = field(5, :);
+    p(k, que) = field(1, :);
+    v(k, que) = field(2, :);
+    q(k, que) = field(3, :);
+    T(k, que) = field(4, :);
+    T_m(k, que) = field(5, :);
     
   end
   
@@ -75,38 +76,38 @@ for j = 1:maxO
   for que = 2:N_layers % x-position loop
     
     [field, interval] = Backend_codes.Interrogation( ...
-      Hamat, Hb_f, S_f, cumLo, que, N_layers, BCI, T_mean, MDM, Omega(j), w1_c, w2_c);
-    pM(j, que) = field(1, :);
-    vM(j, que) = field(2, :);
-    qM(j, que) = field(3, :);
-    TM(j, que) = field(4, :);
-    T_Mm(j, que) = field(5, :);
+      Hamat, Hb_f, S_f, cumLo, que, N_layers, BCI, T_mean, MDM, Omega(k), w1_c, w2_c);
+    pM(k, que) = field(1, :);
+    vM(k, que) = field(2, :);
+    qM(k, que) = field(3, :);
+    TM(k, que) = field(4, :);
+    T_Mm(k, que) = field(5, :);
     
   end
   
   %% At the maximum velocity position in the first and last layers (thermal thickness)
-  [field, ~] = Backend_codes.Interrogation(Hamat, Hb_f, S_f, cumLo, cumLo(1)-(2 * (MDM(1, 9) / (2 * MDM(1, 7) * Omega(j) * MDM(1, 2)))^(1 / 2)), N_layers, BCI, T_mean, MDM, Omega(j), w1_c, w2_c);
-  pM(j, 1) = field(1, :);
-  vM(j, 1) = field(2, :);
-  qM(j, 1) = field(3, :);
-  TM(j, 1) = field(4, :);
-  T_Mm(j, 1) = field(5, :);
+  [field, ~] = Backend_codes.Interrogation(Hamat, Hb_f, S_f, cumLo, cumLo(1)-(2 * (MDM(1, 9) / (2 * MDM(1, 7) * Omega(k) * MDM(1, 2)))^(1 / 2)), N_layers, BCI, T_mean, MDM, Omega(k), w1_c, w2_c);
+  pM(k, 1) = field(1, :);
+  vM(k, 1) = field(2, :);
+  qM(k, 1) = field(3, :);
+  TM(k, 1) = field(4, :);
+  T_Mm(k, 1) = field(5, :);
   
-  [field, ~] = Backend_codes.Interrogation(Hamat, Hb_f, S_f, cumLo, cumLo(end)+(2 * (MDM(1, 9) / (2 * MDM(1, 7) * Omega(j) * MDM(1, 2)))^(1 / 2)), N_layers, BCI, T_mean, MDM, Omega(j), w1_c, w2_c);
-  pM(j, N_layers+1) = field(1, :);
-  vM(j, N_layers+1) = field(2, :);
-  qM(j, N_layers+1) = field(3, :);
-  TM(j, N_layers+1) = field(4, :);
-  T_Mm(j, N_layers+1) = field(5, :);
+  [field, ~] = Backend_codes.Interrogation(Hamat, Hb_f, S_f, cumLo, cumLo(end)+(2 * (MDM(1, 9) / (2 * MDM(1, 7) * Omega(k) * MDM(1, 2)))^(1 / 2)), N_layers, BCI, T_mean, MDM, Omega(k), w1_c, w2_c);
+  pM(k, N_layers+1) = field(1, :);
+  vM(k, N_layers+1) = field(2, :);
+  qM(k, N_layers+1) = field(3, :);
+  TM(k, N_layers+1) = field(4, :);
+  T_Mm(k, N_layers+1) = field(5, :);
   
   %% ==================================================================== %%
   
   %Decay coefficient
-  kay1(j) = w1_c{1};
-  kay2(j) = w1_c{end};
+  kay1(k) = w1_c(1);
+  kay2(k) = w1_c(end);
   
   %% Update Progressbar:
-  progressbar(j/maxO)
+  progressbar(k/maxO)
 end
 
 [eta_TP_1_A, eta_TP_2_A, eta_TP_1, ...

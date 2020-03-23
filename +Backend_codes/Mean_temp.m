@@ -44,10 +44,11 @@ if N_layers > 3
 end
 sol = subs(-((MDM(N_layers-1, 15) + MDM(N_layers, 13)))*T_mean{N_layers-1}+q_mean{N_layers-1}+(MDM(N_layers-1, 12) - MDM(N_layers, 10)), x, cumLo(N_layers));
 
-c1 = double(vpasolve(sol, cc1));
+c1 = mp(char(vpasolve(sol, cc1)));
 c2 = (MDM(2, 10)) * (cumLo(2)) * (((cumLo(2)) / (2 * MDM(2, 9))) - (1 / (MDM(1, 15) + MDM(2, 13)))) + ...
   c1 * ((MDM(2, 9) / (MDM(1, 15) + MDM(2, 13))) - cumLo(2)) + (MDM(1, 12) - (MDM(2, 10)));
 
+[T,q] = deal(cell(N_layers,1));
 for i = 2:N_layers - 1
   
   %% Temperature solution with solved coefficients
@@ -68,9 +69,14 @@ for i = 2:N_layers - 1
 end
 
 %% Temperature solution in extremity layers
-T{1} = vpa(c2);
-q{1} = vpa(c1);
-T{N_layers} = vpa(subs(pTa{N_layers-1}, [cc1], [c1]));
-q{N_layers} = vpa(subs(pqa{N_layers-1}, [cc1], [c1]));
 
+% T{1} = vpa(c2);
+% q{1} = vpa(c1);
+% T{N_layers} = vpa(subs(pTa{N_layers-1}, [cc1], [c1]));
+% q{N_layers} = vpa(subs(pqa{N_layers-1}, [cc1], [c1]));
+
+T{1} = mp(c2);
+q{1} = mp(c1);
+T{N_layers} = mp(char(subs(pTa{N_layers-1}, cc1, c1)));
+q{N_layers} = mp(char(subs(pqa{N_layers-1}, cc1, c1)));
 end

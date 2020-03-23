@@ -1,5 +1,4 @@
-function [ETA1, ETA2, PRES1, PRES2, T, q, v, p, TM, qM, vM, pM, T_m, T_Mm, Omega, Posx, cumLo, MDM, N_layers] = ...
-  oneT_Solver_function()
+function varargout = oneT_Solver_function()
 %% Multilayer model of thermoacoustic sound generation in steady periodic operation
 % ==================================================================== %%
 
@@ -137,3 +136,8 @@ load('Layer_function.mat'); % TODO: Make class (but different)
 % plot_res(PRES1,PRES2,ETA1,ETA2,T,q,v,p,TM,qM,vM,pM,T_m,T_Mm,Omega,Posx,cumLo,MDM(:,1),N_layers)
 
 %% ==================================================================== %%
+
+%% Assigning outputs
+if nargout > 0
+  varargout = {ETA1, ETA2, PRES1, PRES2, T, q, v, p, TM, qM, vM, pM, T_m, T_Mm, Omega, Posx, cumLo, MDM, N_layers};
+end

@@ -1,4 +1,4 @@
-
+error('Scripts are not allowed!')
 %% Multilayer model of thermoacoustic sound generation in steady periodic operation
 % ==================================================================== %%
 

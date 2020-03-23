@@ -30,24 +30,23 @@ end
 %% Temperature at the Edge boundaries (1)
 % Written twice - once for the solution starting from the first layer, and
 % one starting from the last layer
-Tes{1} = Hamat{1} * feval(Hb_f, w1_c{1}, w2_c{1}, cumLo(2));
-Tn{1} = (Tes{1}(4, 1:4) * const{1});
-Tes{N_layers} = Hamat{N_layers} * feval(Hb_f, w1_c{N_layers}, w2_c{N_layers}, cumLo(N_layers+1));
-Tn{N_layers} = (Tes{N_layers}(4, 1:4) * const{N_layers});
 
-Tbeta{1} = (MDM(1, 15) + MDM(2, 13)) * [0; 0; Tn{1}; 0];
-Tbeta{N_layers} = (MDM(N_layers-1, 15) + MDM(N_layers, 13)) * [0; 0; Tn{N_layers}; 0];
+Tes{1} = Hamat{1} * feval(Hb_f, w1_c(1), w2_c(1), cumLo(2));
+tmp = double(Tes{1}(4, 1:4));
+Tn{1} = tmp * const{1};
+Tn{N_layers} = tmp * const{N_layers};
+Tes{N_layers} = Hamat{N_layers} * feval(Hb_f, w1_c(N_layers), w2_c(N_layers), cumLo(N_layers+1));
+
+Tbeta{1} = double(MDM(1, 15) + MDM(2, 13)) * [0; 0; Tn{1}; 0];
+Tbeta{N_layers} = double(MDM(N_layers-1, 15) + MDM(N_layers, 13)) * [0; 0; Tn{N_layers}; 0];
 
 %% Temperature at the Edge boundaries (2)
-
-Tn2{1} = (Tes{1}(4, 1:4) * const{1});
-Tn2{N_layers} = (Tes{N_layers}(4, 1:4) * const{N_layers});
-
-Tbeta2{1} = (MDM(1, 15) + MDM(2, 13)) * [0; 0; Tn2{1}; 0];
-Tbeta2{N_layers} = (MDM(N_layers-1, 15) + MDM(N_layers, 13)) * [0; 0; Tn2{N_layers}; 0];
+Tn2{1} = Tn{1};
+Tn2{N_layers} = Tn{N_layers};
+Tbeta2{1} = Tbeta{1};
+Tbeta2{N_layers} = Tbeta{N_layers};
 
 %% Inverted index for Layer Boundary Condition Calculations
-
 f = fliplr(1:N_layers);
 
 %%
@@ -58,25 +57,26 @@ f = fliplr(1:N_layers);
 %  Dimensions(13)=1;
 
 %     load('Layer_function_DPL.mat')
-for i = 2:Nrounds
+for k = 2:Nrounds
   
   %% Calculating the boundary conditions (1)
-  const{i} = ((feval(invHb_f, w1_c{i}, w2_c{i}, cumLo(i))) * invHamat{i} * ...
-    (((Hamat{i-1} * feval(Hb_f, w1_c{i-1}, w2_c{i-1}, cumLo(i)))) * const{i-1} ...
-    +((Smat{i-1} - Smat{i}) + [0; 0; (MDM(i-1, 12) - MDM(i, 10)); 0] - Tbeta{i-1})));
+  const{k} = ( double(feval(invHb_f, w1_c(k), w2_c(k), cumLo(k)) * invHamat{k})) * ...
+    ( double(Hamat{k-1} * feval(Hb_f, w1_c(k-1), w2_c(k-1), cumLo(k))) * const{k-1} + ...
+     (double((Smat{k-1} - Smat{k}) + [0; 0; (MDM(k-1, 12) - MDM(k, 10)); 0]) - Tbeta{k-1}) );
   
-  Tes{i} = Hamat{i} * feval(Hb_f, w1_c{i}, w2_c{i}, cumLo(i+1));
-  Tn{i} = (Tes{i}(4, 1:4) * const{i});
-  Tbeta{i} = (MDM(i, 15) + MDM(i+1, 13)) * [0; 0; Tn{i}; 0];
+  Tes{k} = Hamat{k} * feval(Hb_f, w1_c(k), w2_c(k), cumLo(k+1));
+  Tn{k} = double(Tes{k}(4, 1:4)) * const{k};
+  Tbeta{k} = double(MDM(k, 15) + MDM(k+1, 13)) * [0; 0; Tn{k}; 0];
   
   %% Calculating the boundary conditions (2)
-  const2{f(i)} = ((feval(invHb_f, w1_c{f(i)}, w2_c{f(i)}, cumLo(f(i)+1))) * invHamat{f(i)} * ...
-    ((Hamat{f(i)+1} * feval(Hb_f, w1_c{f(i)+1}, w2_c{f(i)+1}, cumLo(f(i)+1))) * const2{f(i)+1} ...
-    +((Smat{f(i)+1} - Smat{f(i)}) + [0; 0; (MDM(f(i)+1, 10) - MDM(f(i), 12)); 0] + Tbeta2{f(i)+1})));
-  
-  Tes{f(i)} = Hamat{f(i)} * feval(Hb_f, w1_c{f(i)}, w2_c{f(i)}, cumLo(f(i)));
-  Tn2{f(i)} = (Tes{f(i)}(4, 1:4) * const2{f(i)});
-  Tbeta2{f(i)} = (MDM(f(i), 15) + MDM(f(i)+1, 13)) * [0; 0; Tn2{f(i)}; 0];
+  const2{f(k)} = double(feval(invHb_f, w1_c(f(k)), w2_c(f(k)), cumLo(f(k)+1)) * invHamat{f(k)}) * ...
+    ( double(Hamat{f(k)+1} * feval(Hb_f, w1_c(f(k)+1), w2_c(f(k)+1), cumLo(f(k)+1))) * const2{f(k)+1} +...
+     (double((Smat{f(k)+1} - Smat{f(k)}) + [0; 0; (MDM(f(k)+1, 10) - MDM(f(k), 12)); 0]) + Tbeta2{f(k)+1}) ...
+    );
+
+  Tes{f(k)} = Hamat{f(k)} * feval(Hb_f, w1_c(f(k)), w2_c(f(k)), cumLo(f(k)));
+  Tn2{f(k)} = double(Tes{f(k)}(4, 1:4)) * const2{f(k)};
+  Tbeta2{f(k)} = double(MDM(f(k), 15) + MDM(f(k)+1, 13)) * [0; 0; Tn2{f(k)}; 0];
   
 end
 
