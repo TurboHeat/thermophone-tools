@@ -2,10 +2,14 @@
 Optional preparations:
 % mp toolbox filepath - must be changed per-user!
 addpath('/Users/SEJ/Desktop/Thermophone_models/25_3_20_General_1-Temperature_solver/AdvanpixMCT-4.7.0-1.13589')
+
+% Simple benchmarking code:
+tic; oneT_Solver_function; toc
 %}
 function [] = oneT_Solver_function()
 %% Multilayer model of thermoacoustic sound generation in steady periodic operation
 % ==================================================================== %%
+% warning('off', 'MATLAB:singularMatrix') % matrix warning toggle
 warning('off', 'MATLAB:nearlySingularMatrix') % matrix warning toggle
 
 %% ******* The mp precision must be changed until the solution is unchanging ******* %%

@@ -63,17 +63,10 @@ Ny = max(100, round(dimensions(1)/min_dis)); % Number of point sources in width
 Nz = max(100, round(dimensions(2)/min_dis)); % Number of point sources in length
 
 % Variable initialisation
-p = zeros(maxO, Nq);
-q = p;
-T = p;
-v = p;
-T_m = p; %x-positions
-pM = zeros(maxO, N_layers+1);
-TM = pM;
-vM = pM;
-qM = pM;
-T_Mm = pM; %Boundary layer interface positions
-BCI = ones(4, N_layers); %matrix of constants (solutions) for each layer;
+[p, q, T, v, T_m] = deal(zeros(maxO, Nq));
+[pM, TM, vM, qM, T_Mm] = deal(zeros(maxO, N_layers+1));
+% T_m  - x-positions
+% T_Mm - Boundary layer interface positions
 
 % Using mp toolbox, we convert the key datatypes to mp
 MDMmp = mp(MDM);
@@ -103,8 +96,9 @@ for k = 1:maxO
       T_m(k, que) = field(5, :);
     end
     
-    
+    % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     % If the user is not interested in obtaining the spatial interface conditions, this loop can be removed.
+    % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     for que = 2:N_layers % x-position loop
       % Finding the solution at the boundary interfaces (not vital)
       [field, interval] = Backend_codes.Interrogation(Hamat, Hbmat, Smat, cumLo, que, N_layers, BCI, T_mean, MDM, Omega(k), w1_c, w2_c, SCALE);
@@ -120,7 +114,7 @@ for k = 1:maxO
   %% ==================================================================== %%
   
   %% At the maximum velocity position in the first and last layers (thermal thickness)
-  % These are needed to determine the propagation fromthe front and back
+  % These are needed to determine the propagation from the front and back
   % boundaries
   
   [field, ~] = Backend_codes.Interrogation(Hamat, Hbmat, Smat, cumLo, cumLo(1)-(2 * (MDM(1, 9) / (2 * MDM(1, 7) * Omega(k) * MDM(1, 2)))^(1 / 2)), N_layers, BCI, T_mean, MDM, Omega(k), w1_c, w2_c, SCALE);
@@ -140,8 +134,8 @@ for k = 1:maxO
   %% ==================================================================== %%
   
   %Decay coefficient for the propagation calculation
-  kay1(k) = w1_c{1};
-  kay2(k) = w1_c{end};
+  kay1(k) = w1_c(1);
+  kay2(k) = w1_c(end);
   
   % Showing progress
 %   progressbar(k/maxO)

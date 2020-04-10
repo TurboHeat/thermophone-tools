@@ -13,8 +13,8 @@ end
 
 %% Evaluating the matrix at the interrogation conditions
 
-field = Hamat(:,:,interval) * (diag(diag((double(Hbmat{interval}.^(posx / SCALE)))))) * BCI(:, interval) + ...
-  Smat{interval};
+field = Hamat(:,:,interval) * (diag(diag((double(Hbmat(:,:,interval).^(posx / SCALE)))))) * BCI(:, interval) + ...
+  Smat(:,interval);
 
 field(1, :) = field(1, :);
 field(2, :) = field(2, :);
