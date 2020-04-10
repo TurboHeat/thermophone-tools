@@ -7,5 +7,4 @@ if interval > N_layers
 elseif isempty(interval)
   interval = 1;
 end
-
 end
