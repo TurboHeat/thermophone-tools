@@ -38,7 +38,7 @@ cumLo = cumsum(MDM(:, 1));
 cumLo = [cumLo(1); cumLo];
 
 %% steady-State mean temperature calculation
-[T_mean, q_mean] = Backend_codes.Mean_temp6(double(MDM), double(N_layers), double(cumLo), x);
+[T_mean, ~] = Backend_codes.Mean_temp6(double(MDM), double(N_layers), double(cumLo), x);
 
 %% ==================================================================== %%
 
@@ -88,7 +88,7 @@ for k = 1:maxO
     % of the result, this loop can be removed.
     for que = 1:Nq % x-position loop
       % Applying the solution to a specific x-location (not vital)
-      [field, interval] = Backend_codes.Interrogation(Hamat, Hbmat, Smat, cumLo, Posx(que), N_layers, BCI, T_mean, MDM, Omega(k), w1_c, w2_c, SCALE);
+      [field, ~] = Backend_codes.Interrogation(Hamat, Hbmat, Smat, cumLo, Posx(que), N_layers, BCI, T_mean, MDM, Omega(k), w1_c, w2_c, SCALE);
       p(k, que) = field(1, :);
       v(k, que) = field(2, :);
       q(k, que) = field(3, :); ...
@@ -101,7 +101,7 @@ for k = 1:maxO
     % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     for que = 2:N_layers % x-position loop
       % Finding the solution at the boundary interfaces (not vital)
-      [field, interval] = Backend_codes.Interrogation(Hamat, Hbmat, Smat, cumLo, que, N_layers, BCI, T_mean, MDM, Omega(k), w1_c, w2_c, SCALE);
+      [field, ~] = Backend_codes.Interrogation(Hamat, Hbmat, Smat, cumLo, que, N_layers, BCI, T_mean, MDM, Omega(k), w1_c, w2_c, SCALE);
       pM(k, que) = field(1, :);
       vM(k, que) = field(2, :);
       qM(k, que) = field(3, :);
@@ -146,8 +146,8 @@ kay1 = double(kay1);
 kay2 = double(kay2);
 
 % Calculation of the various efficiency parameters
-[eta_TP_1_A, eta_TP_2_A, eta_TP_1, ...
-  eta_TP_2, eta_Therm_A, eta_Therm, ...
+[~, ~, eta_TP_1, ...
+  eta_TP_2, ~, eta_Therm, ...
   eta_aco_1, eta_aco_2, ...
   eta_Conv_1, eta_Conv_2, ...
   eta_Tot_1, eta_Tot_2] = ...

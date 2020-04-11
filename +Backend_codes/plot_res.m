@@ -1,4 +1,4 @@
-function plot_res(PRES1, PRES2, ETA1, ETA2, T, q, v, p, TM, qM, vM, pM, T_m, T_Mm, Omega, Posx, cumLo, L0, N_layers)
+function plot_res(PRES1, PRES2, ~, ~, T, q, v, p, TM, qM, vM, pM, T_m, T_Mm, Omega, Posx, cumLo, L0, N_layers)
 
 %% Plotting frequency dependent plot
 if numel(Omega) ~= 1

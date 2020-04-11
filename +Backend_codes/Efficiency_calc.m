@@ -3,20 +3,21 @@ function [eta_TP_1_A, eta_TP_2_A, eta_TP_1, ...
   eta_aco_1, eta_aco_2, ...
   eta_Conv_1, eta_Conv_2, ...
   eta_Tot_1, eta_Tot_2] = ...
-  Efficiency_calc(pM, TM, qM, vM, TH_layer_number, N_layers, P_in, MDM)
+  Efficiency_calc(~, ~, qM, vM, TH_layer_number, N_layers, P_in, MDM)
 %% ==================================================================== %%
 
 %% Boundary Values
-
-%Temperature in primary layer
+%{
+% Temperature in primary layer
 TwaveF = abs(TM);
-%Heatflux in primary layer
-QwaveF = abs(qM);
-%Pressure
+% Pressure
 Pwave = abs(pM);
-%Velocity
+% Velocity
 Vwave = abs(vM);
-%Complex velocity
+%}
+% Heatflux in primary layer
+QwaveF = abs(qM);
+% Complex velocity
 cVwave = (vM);
 
 %% ==================================================================== %%

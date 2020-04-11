@@ -1,6 +1,6 @@
 function [Mag_Pff_1, Mag_Prms_ff_1, Mag_Prms_nf_ff_1, Ph_Pff_1, ...
   Mag_Pff_2, Mag_Prms_ff_2, Mag_Prms_nf_ff_2, Ph_Pff_2] = ...
-  Rayleigh_func(Ny, Nz, Dimensions, MDM, kay1, kay2, vM, cumLo, maxO, x, Omega)
+  Rayleigh_func(Ny, Nz, Dimensions, MDM, kay1, kay2, vM, cumLo, maxO, ~, Omega)
 %% ==================================================================== %%
 
 %% Application of Rayleigh's second integral
