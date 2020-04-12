@@ -15,6 +15,7 @@ spmd
   warning('off', 'MATLAB:nearlySingularMatrix') % matrix warning toggle
   mp.Digits(50); % mp toolbox precision
 end
+% addpath(fullfile(pwd, 'progressbar'));
 
 # Simple benchmarking:
 tic; oneT_Solver_function; toc

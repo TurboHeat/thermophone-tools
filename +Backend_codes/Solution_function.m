@@ -82,6 +82,7 @@ MDM_7 = MDM(1,7);
 MDM_9 = MDM(1,9);
 d13 = dimensions(13);
 
+ppm = ParforProgressbar(maxO, 'showWorkerProgress', true, 'progressBarUpdatePeriod', 0.5);
 parfor k = 1:maxO
   % Create local variables
   [lpM, lTM, lvM, lqM, lT_Mm] = deal(complex(zeros(1, N_layers+1)));
@@ -152,7 +153,7 @@ parfor k = 1:maxO
   kay2(k) = w1_c(end);
   
   % Showing progress
-%   progressbar(k/maxO)
+	ppm.increment(); %#ok<PFBNS>
 end
 
 % the rest of the code is double precision (mp is not required)
