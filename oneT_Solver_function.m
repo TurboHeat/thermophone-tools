@@ -1,10 +1,26 @@
 %{
-Optional preparations:
-% mp toolbox filepath - must be changed per-user!
-addpath('/Users/SEJ/Desktop/Thermophone_models/25_3_20_General_1-Temperature_solver/AdvanpixMCT-4.7.0-1.13589')
+# Optional preparations:
+1) Multiprecision Computing Toolbox for MATLAB
+  Download links:
+  Windows:  https://www.advanpix.com/wp-content/plugins/download-monitor/download.php?id=1 
+  Linux:    https://www.advanpix.com/wp-content/plugins/download-monitor/download.php?id=8 
+  Mac:      https://www.advanpix.com/wp-content/plugins/download-monitor/download.php?id=9
 
-% Simple benchmarking code:
+  % Toolbox path - must be changed per-user!
+  addpath('/Users/SEJ/Desktop/Thermophone_models/25_3_20_General_1-Temperature_solver/AdvanpixMCT-4.7.0-1.13589')
+
+2) Running in parfor mode (see Solution_function.m L85):
+parpool();
+spmd
+  warning('off', 'MATLAB:nearlySingularMatrix') % matrix warning toggle
+  mp.Digits(50); % mp toolbox precision
+end
+
+# Simple benchmarking:
 tic; oneT_Solver_function; toc
+
+# Better Benchmarking:
+timeit(@oneT_Solver_function)
 %}
 function [] = oneT_Solver_function()
 %% Multilayer model of thermoacoustic sound generation in steady periodic operation
@@ -13,7 +29,7 @@ function [] = oneT_Solver_function()
 warning('off', 'MATLAB:nearlySingularMatrix') % matrix warning toggle
 
 %% ******* The mp precision must be changed until the solution is unchanging ******* %%
-mp.Digits(50); %mp toolbox precision
+mp.Digits(50); % mp toolbox precision
 
 %% ******* ******* ******* ******* *******  ******* *******  ******* ******* ******* %%
 
@@ -93,11 +109,10 @@ Dimensions = [Ly, Lz, x_int, y_int, z_int, OmegaF, OmegaL, N_Omega, maxX, N_x, T
 
 %% Keeping it clean
 clearvars -except MDM Dimensions
-syms x
 
 %% ** Solution function **
 [ETA1, ETA2, PRES1, PRES2, T, q, v, p, TM, qM, vM, pM, T_m, T_Mm, Omega, Posx, cumLo, MDM, N_layers] = ...
-  Backend_codes.Solution_function(MDM, Dimensions, x);
+  Backend_codes.Solution_function(MDM, Dimensions);
 %% Outputs
 %{
 ETA1     - Array of efficiencies from back side [thermal product, thermal, acoustic, gamma, total]
@@ -122,6 +137,6 @@ N_layers - Number of Layers in build
 %}
 
 %% Plotting the results
-Backend_codes.plot_res(PRES1, PRES2, ETA1, ETA2, T, q, v, p, TM, qM, vM, pM, T_m, T_Mm, Omega, Posx, cumLo, MDM(:, 1), N_layers);
+% Backend_codes.plot_res(PRES1, PRES2, ETA1, ETA2, T, q, v, p, TM, qM, vM, pM, T_m, T_Mm, Omega, Posx, cumLo, MDM(:, 1), N_layers);
 
 %% ==================================================================== %%

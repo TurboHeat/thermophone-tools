@@ -1,4 +1,4 @@
-function [T, q] = Mean_temp6(MDM, N_layers, cumLo, x)
+function [T, q] = Mean_temp6(MDM, N_layers, cumLo)
 %Initialisation of all Kernels
 A = zeros(1, N_layers);
 B = A;
@@ -53,6 +53,7 @@ mean_c(1, 2) = (MDM(2, 10)) * (cumLo(2)) * (((cumLo(2)) / (2 * MDM(2, 9))) - (1 
 pTa{1} = mean_c(1, 1) * (cumLo(2) + ((MDM(2, 9) / (MDM(1, 15) + MDM(2, 13))) - cumLo(2))) + ((MDM(2, 11)) * (cumLo(2)) * ((cumLo(2) / (2 * MDM(2, 9))) - (1 / (MDM(1, 15) + MDM(2, 13)))) + (MDM(1, 12) - (MDM(2, 10)))) - (MDM(2, 11) * (cumLo(2)^2)) / (2 * MDM(2, 9));
 pqa{1} = -MDM(2, 9) * (mean_c(1, 1)) + ((MDM(2, 11)) * (cumLo(2))) + (MDM(1, 12) - MDM(2, 10));
 
+syms x
 for k = 2:N_layers - 1
   % Determining the constants of the ith layer
   mean_c(k, 1) = M(k) + N(k) * pqa{k-1};

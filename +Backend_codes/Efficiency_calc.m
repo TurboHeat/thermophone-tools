@@ -1,9 +1,8 @@
-function [eta_TP_1_A, eta_TP_2_A, eta_TP_1, ...
-  eta_TP_2, eta_Therm_A, eta_Therm, ...
+function [eta_TP_1, eta_TP_2, eta_Therm, ...
   eta_aco_1, eta_aco_2, ...
   eta_Conv_1, eta_Conv_2, ...
   eta_Tot_1, eta_Tot_2] = ...
-  Efficiency_calc(~, ~, qM, vM, TH_layer_number, N_layers, P_in, MDM)
+  Efficiency_calc(qM, vM, TH_layer_number, N_layers, P_in, MDM)
 %% ==================================================================== %%
 
 %% Boundary Values
@@ -25,15 +24,15 @@ cVwave = (vM);
 %% Efficiency Calculation
 
 %% 'Thermal product' efficiency - Across all layers
-eta_TP_1_A = QwaveF(:, 2) ./ (QwaveF(:, 2) + QwaveF(:, N_layers));
-eta_TP_2_A = QwaveF(:, N_layers) ./ (QwaveF(:, 2) + QwaveF(:, N_layers));
+% eta_TP_1_A = QwaveF(:, 2) ./ (QwaveF(:, 2) + QwaveF(:, N_layers));
+% eta_TP_2_A = QwaveF(:, N_layers) ./ (QwaveF(:, 2) + QwaveF(:, N_layers));
 
 %% 'Thermal product' efficiency - Across the thermophone layer
 eta_TP_1 = QwaveF(:, TH_layer_number) ./ (QwaveF(:, TH_layer_number) + QwaveF(:, TH_layer_number+1));
 eta_TP_2 = QwaveF(:, TH_layer_number+1) ./ (QwaveF(:, TH_layer_number) + QwaveF(:, TH_layer_number+1));
 
 %% 'Thermal' efficiency - Across all layers
-eta_Therm_A = (QwaveF(:, 2) + QwaveF(:, N_layers)) ./ P_in;
+% eta_Therm_A = (QwaveF(:, 2) + QwaveF(:, N_layers)) ./ P_in;
 
 %% 'Thermal' efficiency - Across the thermophone layer
 eta_Therm = (QwaveF(:, TH_layer_number) + QwaveF(:, TH_layer_number+1)) ./ (P_in);
