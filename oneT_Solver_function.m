@@ -1,22 +1,4 @@
 %{
-# Optional preparations:
-1) Multiprecision Computing Toolbox for MATLAB
-  Download links:
-  Windows:  https://www.advanpix.com/wp-content/plugins/download-monitor/download.php?id=1 
-  Linux:    https://www.advanpix.com/wp-content/plugins/download-monitor/download.php?id=8 
-  Mac:      https://www.advanpix.com/wp-content/plugins/download-monitor/download.php?id=9
-
-  % Toolbox path - must be changed per-user!
-  addpath('/Users/SEJ/Desktop/Thermophone_models/25_3_20_General_1-Temperature_solver/AdvanpixMCT-4.7.0-1.13589')
-
-2) Running in parfor mode (see Solution_function.m L85):
-parpool();
-spmd
-  warning('off', 'MATLAB:nearlySingularMatrix') % matrix warning toggle
-  mp.Digits(50); % mp toolbox precision
-end
-% addpath(fullfile(pwd, 'progressbar'));
-
 # Simple benchmarking:
 tic; oneT_Solver_function; toc
 
@@ -24,8 +6,6 @@ tic; oneT_Solver_function; toc
 timeit(@oneT_Solver_function)
 %}
 function [] = oneT_Solver_function()
-%% Multilayer model of thermoacoustic sound generation in steady periodic operation
-% ==================================================================== %%
 % warning('off', 'MATLAB:singularMatrix') % matrix warning toggle
 warning('off', 'MATLAB:nearlySingularMatrix') % matrix warning toggle
 
@@ -34,75 +14,33 @@ mp.Digits(50); % mp toolbox precision
 
 %% ******* ******* ******* ******* *******  ******* *******  ******* ******* ******* %%
 
-%% Instructions of use
-%{
-This code is based upon the work of Pierre Guiraud et al., published in
-May 2019
-"Multilayer modeling of thermoacoustic sound generation for thermophone
-analysis and design"
-https://doi.org/10.1016/j.jsv.2019.05.001
-
-What this model can do:
-Constant volumetric generation
-Boundary generation
-Convective losses
-
-Data of each material layer is included in a matrix called MDM. Each row
-represents the properties of a different layer of the thermophone design,
-in the order in which they appear.
-The column inputs are as follows:
-Column No:
-~~~ Material Properties ~~~
-1 - Layer thickness
-2 - Layer density
-3 - Layer coefficient of thermal expansion
-4 - Layer 1st viscosity coefficient (1st Lame coefficient for solids)
-5 - Layer 2nd viscosity coefficient (2nd Lame coefficient for solids)
-6 - Constant pressure specific heat capacity (same as Cv for a solid)
-7 - Constant volume specific heat capacity
-8 - Layer thermal conductivity
-~~~ Forcing parameters ~~~
-9 - Layer left edge boundary generation (W)
-10 - Layer internal generation  (W)
-11 - Layer right edge boundary generation (W)
-~~~ Experimental Conditions ~~~
-12 - Layer left edge heat transfer coefficient [h]
-13 - Layer internal mean temperature (calculated automatically for gases, set for solids)
-14 - Layer right edge heat transfer coefficient [h]
-%
-Visualised example structure
-MDM = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14;... (layer 1)
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14;... (layer 1)
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14;... (layer 1)
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14;... (layer 1)];
-%}
 % Example run cases
 MDM = Backend_codes.Example_cases();
 
-%% Thermophone dimensions in m [Ly,Lz], microphone location [x_int,y_int,z_int]
-Ly = 0.01;
-Lz = 0.01;
-x_int = 0.05;
-y_int = 0;
-z_int = 0;
+%% Thermophone dimensions
+Ly = 0.01; % [m]
+Lz = 0.01; % [m]
+
+%% Microphone location [x_int,y_int,z_int]
+x_int = 0.05; % [m]
+y_int = 0;    % [m]
+z_int = 0;    % [m]
 
 %% Frequency sweep
-OmegaF = 200 * 2 * pi;
-OmegaL = 50000 * 2 * pi;
-N_Omega = 300;
+OmegaF = 200 * 2 * pi;   % [rad/s]
+OmegaL = 50000 * 2 * pi; % [rad/s]
+N_Omega = 300;           % [unitless]
 
 %% x-location sweep
-maxX = 20 * 10^-5;
-N_x = 1;
-
-%% Are you interested in calculating any spatial information? (only really needed for in-depth analysis)
-xres = 0;
+maxX = 20 * 10^-5; % [m]
+N_x = 1;           % [unitless]
+xres = false; % switch for calculating spatial information (only really needed for in-depth analysis)
 
 %% Initialise Ambient temperature
-T_amb = 3 * 10^2;
+T_amb = 3 * 10^2; % [K]
 
 %% Location of Thermophone layer (used in the efficiency calculation)
-TH_layer_number = 2;
+TH_layer_number = 2; % [1 ... size(MDM,1)]
 
 %% Storing all the run parameters into an array
 Dimensions = [Ly, Lz, x_int, y_int, z_int, OmegaF, OmegaL, N_Omega, maxX, N_x, T_amb, TH_layer_number, xres];

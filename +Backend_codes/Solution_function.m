@@ -82,7 +82,7 @@ MDM_7 = MDM(1,7);
 MDM_9 = MDM(1,9);
 d13 = dimensions(13);
 
-ppm = ParforProgressbar(maxO, 'showWorkerProgress', true, 'progressBarUpdatePeriod', 0.5);
+% ppm = ParforProgressbar(maxO, 'showWorkerProgress', true, 'progressBarUpdatePeriod', 0.5);
 parfor k = 1:maxO
   % Create local variables
   [lpM, lTM, lvM, lqM, lT_Mm] = deal(complex(zeros(1, N_layers+1)));
@@ -153,14 +153,15 @@ parfor k = 1:maxO
   kay2(k) = w1_c(end);
   
   % Showing progress
-	ppm.increment(); %#ok<PFBNS>
+% 	ppm.increment(); %#ok<PFBNS>
 end
+% delete(ppm);
 
 % the rest of the code is double precision (mp is not required)
 kay1 = double(kay1);
 kay2 = double(kay2);
 
-% Calculation of the various efficiency parameters
+% Calculation of the various efficiency parameters (OPTIONAL!)
 [eta_TP_1, eta_TP_2, eta_Therm, ...
   eta_aco_1, eta_aco_2, ...
   eta_Conv_1, eta_Conv_2, ...
