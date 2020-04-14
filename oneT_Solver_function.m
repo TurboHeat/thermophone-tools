@@ -34,7 +34,10 @@ N_Omega = 300;           % [unitless]
 %% x-location sweep
 maxX = 20 * 10^-5; % [m]
 N_x = 1;           % [unitless]
+
+%% Switches / flags
 xres = false; % switch for calculating spatial information (only really needed for in-depth analysis)
+optim = true; % are you performing an optimization analysis?
 
 %% Initialise Ambient temperature
 T_amb = 3 * 10^2; % [K]
@@ -43,8 +46,8 @@ T_amb = 3 * 10^2; % [K]
 TH_layer_number = 2; % [1 ... size(MDM,1)]
 
 %% Storing all the run parameters into an array
-Dimensions = [Ly, Lz, x_int, y_int, z_int, OmegaF, OmegaL, N_Omega, maxX, N_x, T_amb, TH_layer_number, xres];
-%            | 1| 2 |   3  |   4  |   5  |   6   |   7   |    8   |   9 | 10 |  11  |       12       |  13 |
+Dimensions = [Ly, Lz, x_int, y_int, z_int, OmegaF, OmegaL, N_Omega, maxX, N_x, T_amb, TH_layer_number, xres, optim];
+%            | 1| 2 |   3  |   4  |   5  |   6   |   7   |    8   |   9 | 10 |  11  |       12       |  13 |   14 |
 
 %% Keeping it clean
 clearvars -except MDM Dimensions
