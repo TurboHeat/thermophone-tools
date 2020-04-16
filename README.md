@@ -35,7 +35,7 @@ Contents:
      * Add the toolbox to MATLAB's PATH using the `path` tool or:
 
         ```matlab
-        addpath('/Users/SEJ/Desktop/Thermophone_models/25_3_20_General_1-Temperature_solver/AdvanpixMCT-4.7.0-1.13589')
+        addpath('path/to/AdvanpixMCT-4.7.0-1.13589')
         ```
 
   1. Trial reset:  
@@ -53,32 +53,33 @@ in the order in which they appear. The column inputs are as follows:
 
     #### Material properties:
 
-    | Col. # | Description                         | Units |
-    |:------:|-------------------------------------|:-----:|
-    |    1   | Thickness                           |  [m]  |
-    |    2   | Density                             |   []  |
-    |    3   | Coeff. thermal expansion            |   []  |
-    |    4   | 1<sup>st</sup> viscosity coeff.     |   []  |
-    |    5   | 2<sup>nd</sup> viscosity coeff.     |   []  |
-    |    6   | C<sub>p</sub>                       |   []  |
-    |    7   | C<sub>v</sub>                       |   []  |
-    |    8   | Thermal conductivity                |   []  |
+    | Col. # |         Symbol        | Description                         |      Units      |
+    |:------:|:---------------------:|-------------------------------------|:---------------:|
+    |    1   |  _L_                  | Thickness                           |       [m]       |
+    |    2   |  _ρ_                  | Density                             |     [kg m⁻³]    |
+    |    3   |  _B_                  | Bulk modulus                        |       [Pa]      |
+    |    4   | _α<sub>T</sub>_       | Coeff. thermal expansion            |      [K⁻¹]      |
+    |    5   | _μ_                   | 1ˢᵗ viscosity coeff.                |   [kg m⁻¹ s⁻¹]  |
+    |    6   | _λ_                   | 2ⁿᵈ viscosity coeff.                |   [kg m⁻¹ s⁻¹]  |
+    |    7   | _c<sub>p</sub>_       | Specific heat, constant pressure    |   [J kg⁻¹ K⁻¹]  |
+    |    8   | _c<sub>v</sub>_       | Specific heat, constant volume      |   [J kg⁻¹ K⁻¹]  |
+    |    9   | _κ_                   | Thermal conductivity                |   [W m⁻¹ K⁻¹]   |
 
     #### Forcing parameters
 
-    | Col. # | Description                  | Units |
-    |:------:|------------------------------|:-----:|
-    |    9   | Lt. edge boundary generation |  [W]  |
-    |   10   | Internal generation          |  [W]  |
-    |   11   | Rt. edge boundary generation |  [W]  |
+    | Col. # |      Symbol      |  Description                 | Units |
+    |:------:|:----------------:|------------------------------|:-----:|
+    |   10   | _S<sub>L</sub>_  | Lt. edge boundary generation |  [W]  |
+    |   11   | _S<sub>0</sub>_  | Internal generation          |  [W]  |
+    |   12   | _S<sub>R</sub>_  | Rt. edge boundary generation |  [W]  |
 
     #### Experimental Conditions
 
-    | Col. # | Description                   | Units |
-    |:------:|-------------------------------|:-----:|
-    |   12   | Lt. edge heat transfer coeff. |  [h]  |
-    |   13   | Internal mean temperature     |  [K]  |
-    |   14   | Rt. edge heat transfer coeff. |  [h]  |
+    | Col. # | Symbol | Description                             |      Units     |
+    |:------:|:------:|-----------------------------------------|:--------------:|
+    |   13   |  _h<sub>L</sub>_ | Lt. edge heat transfer coeff. |  [W m⁻¹ K⁻²]   |
+    |   14   |  _T<sub>0</sub>_ | Internal mean temperature     |      [K]       |
+    |   15   |  _h<sub>R</sub>_ | Rt. edge heat transfer coeff. |  [W m⁻¹ K⁻²]   |
 
     ### Visualized example structure
 
@@ -95,8 +96,8 @@ If `Backend_codes.Solution_function` is configured to run using `parfor`, it is 
     ```matlab
     parpool(); % Create a pool with the default settings
     spmd       % Issue commands to all workers in pool (Single Program, Multiple Data)
-    warning('off', 'MATLAB:nearlySingularMatrix') % matrix warning toggle
-    mp.Digits(50);                                % set mp toolbox precision
+      warning('off', 'MATLAB:nearlySingularMatrix') % Precision warning toggle
+      mp.Digits(50);                                % mp toolbox precision setup
     end
     ```
 
