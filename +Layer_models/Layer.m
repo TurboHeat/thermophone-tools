@@ -1,59 +1,181 @@
-classdef Layer < handle & matlab.mixin.Heterogeneous
-  %LAYER Superclass for other thermophone layer types
+classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDisplay
+  %LAYER Superclass for all thermophone layer types
   %   <Detailed explanation goes here>
-  
-  properties (GetAccess = public, SetAccess = protected)
+  properties (GetAccess = public, SetAccess = public) % Actually, SetAccess = protected
     %% Thermophysical properties
-    % Note: the "0" suffix has been omitted from parameter names
-    % ρ, Density:
-    rho(1,1) {mustBeNonempty}
-    % Bulk modulus:
-    B(1,1) {mustBeNonempty}
-    % Young's modulus:
-    Y(1,1) {mustBeNonempty}
-    % Coefficient of volumetric expansion:
-    alpha(1,1) {mustBeNonempty}
-    % μ, First viscosity coefficient / Lamé first elastic parameter:
-    mu(1,1) {mustBeNonempty}
-    % λ, Second viscosity coefficient / Lamé second elastic parameter:
-    lambda(1,1) {mustBeNonempty}
-    % cₚ, Specific heat at constant pressure:
-    Cp(1,1) {mustBeNonempty}
-    % cᵥ, Specific heat at constant volume:
-    Cv(1,1) {mustBeNonempty}
-    % κ, Thermal conductivity:
-    k(1,1) {mustBeNonempty}
-    % τ_q, Heat-flux time-lag:
-    tauQ(1,1) {mustBeNonempty}
-    % τ_T, Temperature time-lag:
-    tauT(1,1) {mustBeNonempty}
+    % 1) L, Layer thickness [m]:
+    L(1,1) double {mustBeNonempty} = NaN
+    % 2) ρ, Density [kg m⁻³]:
+    rho(1,1) double {mustBeNonempty} = NaN
+    % 3) B, Bulk modulus [Pa]:
+    B(1,1) double {mustBeNonempty} = NaN
+    % 4) α, Coefficient of volumetric expansion [K⁻¹]:
+    alpha(1,1) double {mustBeNonempty} = NaN
+    % 5) μ, First viscosity coefficient / Lamé first elastic parameter [kg m⁻¹ s⁻¹]:
+    mu(1,1) double {mustBeNonempty} = NaN
+    % 6) λ, Second viscosity coefficient / Lamé second elastic parameter [kg m⁻¹ s⁻¹]:
+    lambda(1,1) double {mustBeNonempty} = NaN
+    % 7) cₚ, Specific heat at constant pressure [J kg⁻¹ K⁻¹]:
+    Cp(1,1) double {mustBeNonempty} = NaN
+    % 8) cᵥ, Specific heat at constant volume [J kg⁻¹ K⁻¹]:
+    Cv(1,1) double {mustBeNonempty} = NaN
+    % 9) κ, Thermal conductivity [W m⁻¹ K⁻¹]:
+    k(1,1) double {mustBeNonempty} = NaN
+    %% Forcing parameters
+    % 10) Left edge boundary generation [W]:
+    sL(1,1) double {mustBeNonempty} = NaN
+    % 11) Internal generation [W]:
+    s0(1,1) double {mustBeNonempty} = NaN
+    % 12) Right edge boundary generation [W]:
+    sR(1,1) double {mustBeNonempty} = NaN
+    %% Experimental parameters
+    % 13) Left edge heat transfer coefficient [W m⁻¹ K⁻²]:
+    hL(1,1) double {mustBeNonempty} = NaN
+    % 14) Internal mean temperature [K]:
+    T0(1,1) double {mustBeNonempty} = NaN
+    % 15) Right edge heat transfer coefficient [W m⁻¹ K⁻²]:
+    hR(1,1) double {mustBeNonempty} = NaN
   end
   
+  properties (Access = public) % These properties don't require setters    
+    label(1,1) string {mustBeNonempty} = "DEFAULT NAME"
+  end
+  
+  %% Constructor
   methods (Access = protected)
-    
+
     function layerObj = Layer(props)
       % A protected/private constructor means this class cannot be instantiated
       % externally, but only through a subclass.
       arguments
-        props.rho(1,1) = NaN
-        props.B(1,1) = NaN
-        props.Y(1,1) = NaN
-        props.alpha(1,1) = NaN
-        props.mu(1,1) = NaN
-        props.lambda(1,1) = NaN
-        props.Cp(1,1) = NaN
-        props.Cv(1,1) = NaN
-        props.k(1,1) = NaN
-        props.tauQ(1,1) = NaN
-        props.tauT(1,1) = NaN
+        props.?Layer_models.Layer
       end
-      
-      % Copy field contents (dynamically)
+
+      % Copy field contents into object properties
       fn = fieldnames(props);
       for idxF = 1:numel(fn)
         layerObj.(fn{idxF}) = props.(fn{idxF});
       end
+    end % constructor
+        
+  end % protected methods  
+
+  %% Setters & Getters  
+  methods
+    
+    function set.L(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+    end 
+    
+    function set.rho(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
-  end
+        
+    function set.B(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+    end
+        
+    function set.alpha(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+    end
+        
+    function set.mu(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+    end
+        
+    function set.lambda(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+    end
+        
+    function set.Cp(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+    end
+        
+    function set.Cv(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+    end
+        
+    function set.k(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+    end
+        
+    function set.sL(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+    end
+        
+    function set.s0(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+    end
+            
+    function set.sR(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+    end
+            
+    function set.hL(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+    end
+            
+    function set.T0(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+    end
+            
+    function set.hR(obj, val)
+      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+    end
+    
+  end % no-attribute methods
+
+  %% Pseudo-protected implementation
+  methods (Access = protected, Static = true)
+    function name = protectedSet(callstack)
+      name = Layer_models.Layer.propnameFromCallstack(callstack);
+      if ~(Layer_models.Layer.getCallerMetaclass(callstack(2:end)) <= ?Layer_models.Layer)
+        Layer_models.Layer.throwUnprotectedAccess(name);
+      end
+    end
+    
+    function throwUnprotectedAccess(name)
+      throw(MException('Layer:unprotectedPropertyAccess',...
+        ['Unable to set "', name, '", as it is a protected property!']));
+    end
+    
+    function mc = getCallerMetaclass(callstack)
+      if isempty(callstack)
+        mc = ?meta.class;
+      else
+        [pkg,className,~] = fileparts(callstack(1).file);
+        pkg = strrep(extractAfter(pkg, '+'), [filesep '+'], '.');
+        if isempty(pkg)
+          mc = meta.class.fromName(className);
+        else
+          mc = meta.class.fromName(strjoin({pkg, className}, '.'));
+        end
+      end
+    end
+    
+    function name = propnameFromCallstack(callstack)
+      [~,~,name] = fileparts(callstack(1).name);
+      name = name(2:end); % removing the leading "."
+    end
+    
+  end % protected static methods
+
+  %% Custom display methods
+  methods (Access = protected, Sealed = true)
+    function header = getHeader(obj)
+      header = getHeader@matlab.mixin.CustomDisplay(obj);
+    end
+    
+    function displayNonScalarObject(obj)
+      tab = table(string(erase(arrayfun(@class, obj, 'UniformOutput', false), 'Layer_models.')), ...
+        [obj.label].', [obj.L].', [obj.rho].', [obj.B].', [obj.alpha].', [obj.mu].',...
+        [obj.lambda].', [obj.Cp].', [obj.Cv].', [obj.k].', [obj.sL].', [obj.s0].', ...
+        [obj.sR].', [obj.hL].', [obj.T0].', [obj.hR].',...
+        'VariableNames', ["Type", "Label", "L", "ρ", "B", "α_T", "μ", "λ",...
+        "c_p", "c_v", "κ", "S_L", "S_0", "S_R", "h_L", "T_0", "h_R"]);
+      disp(tab);
+      %       fprintf('%s', matlab.mixin.CustomDisplay.getSimpleHeader(obj));
+    end
+  end  
   
-end
+end % classdef

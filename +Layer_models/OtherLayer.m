@@ -1,5 +1,26 @@
-classdef OtherLayer < Layer
-  %OTHERLAYER A layer that doesn't fit in other categories (for e.g. glue/bonding)
-  %   <Detailed explanation goes here>
+classdef OtherLayer < Layer_models.Layer
+  %OTHERLAYER A layer that doesn't fit in other categories (for e.g. a glue/bonding
+  %layer that joins smooth and rough surfaces together).
 
-end
+  properties (GetAccess = public, SetAccess = public)
+    % Subclass-specific properties
+    
+  end % properties
+  
+  methods (Access = public)
+    %% Constructor
+    function layerObj = OtherLayer(props)
+      arguments
+        props.?Layer_models.OtherLayer
+      end
+      
+      % Create superclass:
+      propsKV = namedargs2cell(props);
+      layerObj = layerObj@Layer_models.Layer(propsKV{:});
+      
+      % Custom modifications:
+      
+    end % constructor
+    
+  end % public methods
+end % classdef
