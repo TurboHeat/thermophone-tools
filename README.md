@@ -59,8 +59,8 @@ in the order in which they appear. The column inputs are as follows:
     |    2   |  _ρ_                  | Density                             |     [kg m⁻³]    |
     |    3   |  _B_                  | Bulk modulus                        |       [Pa]      |
     |    4   | _α<sub>T</sub>_       | Coeff. thermal expansion            |      [K⁻¹]      |
-    |    5   | _μ_                   | 1ˢᵗ viscosity coeff.                |   [kg m⁻¹ s⁻¹]  |
-    |    6   | _λ_                   | 2ⁿᵈ viscosity coeff.                |   [kg m⁻¹ s⁻¹]  |
+    |    5   | _λ_                   | 1ˢᵗ viscosity coeff.                |   [kg m⁻¹ s⁻¹]  |
+    |    6   | _μ_                   | 2ⁿᵈ viscosity coeff.                |   [kg m⁻¹ s⁻¹]  |
     |    7   | _c<sub>p</sub>_       | Specific heat, constant pressure    |   [J kg⁻¹ K⁻¹]  |
     |    8   | _c<sub>v</sub>_       | Specific heat, constant volume      |   [J kg⁻¹ K⁻¹]  |
     |    9   | _κ_                   | Thermal conductivity                |   [W m⁻¹ K⁻¹]   |
@@ -94,8 +94,8 @@ in the order in which they appear. The column inputs are as follows:
 If `Backend_codes.Solution_function` is configured to run using `parfor`, it is necessary to initialize the `mp` toolbox on each node (i.e. worker of the parallel pool) using the following commands:
 
     ```matlab
-    parpool(); % Create a pool with the default settings
-    spmd       % Issue commands to all workers in pool (Single Program, Multiple Data)
+    gcp(); % Create a pool with the default settings (if needed)
+    spmd   % Issue commands to all workers in pool (Single Program, Multiple Data)
       warning('off', 'MATLAB:nearlySingularMatrix') % Precision warning toggle
       mp.Digits(50);                                % mp toolbox precision setup
     end
