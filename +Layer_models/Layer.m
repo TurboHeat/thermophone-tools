@@ -11,10 +11,10 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
     B(1,1) double {mustBeNonempty} = NaN
     % 4) α, Coefficient of volumetric expansion [K⁻¹]:
     alpha(1,1) double {mustBeNonempty} = NaN
-    % 5) μ, First viscosity coefficient / Lamé first elastic parameter [kg m⁻¹ s⁻¹]:
-    mu(1,1) double {mustBeNonempty} = NaN
-    % 6) λ, Second viscosity coefficient / Lamé second elastic parameter [kg m⁻¹ s⁻¹]:
+    % 5) λ, First viscosity coefficient / Lamé first elastic parameter [kg m⁻¹ s⁻¹]:
     lambda(1,1) double {mustBeNonempty} = NaN
+    % 6) μ, Second viscosity coefficient / Lamé second elastic parameter [kg m⁻¹ s⁻¹]:
+    mu(1,1) double {mustBeNonempty} = NaN
     % 7) cₚ, Specific heat at constant pressure [J kg⁻¹ K⁻¹]:
     Cp(1,1) double {mustBeNonempty} = NaN
     % 8) cᵥ, Specific heat at constant volume [J kg⁻¹ K⁻¹]:
@@ -50,14 +50,20 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
       arguments
         props.?Layer_models.Layer
       end
-
-      % Copy field contents into object properties
+      
+      %% Special initialization:
+      % If T0 was not supplied, compute using equation
+      if ~isfield(props, 'T0') && all(isfield(props, {'rho', 'Cp', 'Cv', 'alpha', 'B'}))
+        props.T0 = props.rho * (props.Cp - props.Cv) / ((props.alpha^2) * props.B);
+      end
+      
+      %% Copy field contents into object properties
       fn = fieldnames(props);
       for idxF = 1:numel(fn)
         layerObj.(fn{idxF}) = props.(fn{idxF});
       end
     end % constructor
-        
+            
   end % protected methods  
 
   %% Setters & Getters  
@@ -160,21 +166,29 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
     
   end % protected static methods
 
+  methods (Access = public, Sealed = true)
+    function MDM = toMatrix(obj)
+      % !! Temporary function !! until the solver function is refactored to use object
+      % fields directly.
+      MDM = [[obj.L].', [obj.rho].', [obj.B].', [obj.alpha].', [obj.lambda].',...
+        [obj.mu].', [obj.Cp].', [obj.Cv].', [obj.k].', [obj.sL].', [obj.s0].', ...
+        [obj.sR].', [obj.hL].', [obj.T0].', [obj.hR].'];
+    end
+  end
+  
   %% Custom display methods
   methods (Access = protected, Sealed = true)
+
     function header = getHeader(obj)
       header = getHeader@matlab.mixin.CustomDisplay(obj);
     end
     
     function displayNonScalarObject(obj)
-      tab = table(string(erase(arrayfun(@class, obj, 'UniformOutput', false), 'Layer_models.')), ...
-        [obj.label].', [obj.L].', [obj.rho].', [obj.B].', [obj.alpha].', [obj.mu].',...
-        [obj.lambda].', [obj.Cp].', [obj.Cv].', [obj.k].', [obj.sL].', [obj.s0].', ...
-        [obj.sR].', [obj.hL].', [obj.T0].', [obj.hR].',...
-        'VariableNames', ["Type", "Label", "L", "ρ", "B", "α_T", "μ", "λ",...
-        "c_p", "c_v", "κ", "S_L", "S_0", "S_R", "h_L", "T_0", "h_R"]);
+      tab = [table(string(erase(arrayfun(@class, obj, 'UniformOutput', false), 'Layer_models.')), ...
+              [obj.label].', 'VariableNames', ["Type", "Label"]), ...
+             array2table(obj.toMatrix(), 'VariableNames', ["L", "ρ", "B", "α_T",...
+               "λ", "μ", "c_p", "c_v", "κ", "S_L", "S_0", "S_R", "h_L", "T_0", "h_R"])];
       disp(tab);
-      %       fprintf('%s', matlab.mixin.CustomDisplay.getSimpleHeader(obj));
     end
   end  
   

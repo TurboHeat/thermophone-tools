@@ -1,13 +1,5 @@
 function [MDM] = Example_cases
 
-%{
-New syntax:
-TPH = [Layer_models.FluidLayer("label","Air");
-       Layer_models.ThermophoneLayer("label","Gold");
-       Layer_models.SubstrateLayer("label","Silica");
-       Layer_models.FluidLayer("label","Air")]
-%}
-
 MATERIAL_PATH = fullfile(fileparts(mfilename('fullpath')), '..', '+Layer_models');
 
 load(fullfile(MATERIAL_PATH, 'Air.mat')) % loading a specific material from a .mat file

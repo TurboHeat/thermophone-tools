@@ -58,17 +58,17 @@ clearvars
 %% Gold
 % https://www.azom.com/properties.aspx?ArticleID=598
 % rho - Density
-rhoo = (19.25 + 19.35) * (10^3) / 2;
+rhoo = (19.25 + 19.35) * 1E3 / 2;
 % B - Bulk Moduls
-Bo = (148 + 180) * (10^9) / 2;
+Bo = (148 + 180) * 1E9 / 2;
 % Y - Young's Modulus
-Y = (76 + 81) * (10^9) / 2;
+Y = (76 + 81) * 1E9 / 2;
 % lambda - first viscosity coefficient / first Lame elastic coefficient
 lambdao = 3 * Bo * (3 * Bo - Y) / (9 * Bo - Y); %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
 % meu - Second viscosity coefficient / second Lame elastic coefficient
 meuo = (3 / 2) * (Bo - lambdao); %https://en.wikipedia.org/wiki/Lam%C3%A9_parameters
 % alphaT - coefficient of volumetric expansion
-alphaTo = (13.5 + 14.5) * (10^-6) / 2;
+alphaTo = (13.5 + 14.5) * 1E-6 / 2;
 % Cp - Specific heat at constant pressure
 Cpo = (125 + 135) / 2;
 % Cv - Specific heat at constant volume
