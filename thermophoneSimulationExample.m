@@ -9,22 +9,24 @@ timeit(@thermophoneSimulationExample)
 %% Preparations:
 %{
 # If planning to run on a single core:
-mp.Digits(50); % mp toolbox precision
+mp.Digits(150); % mp toolbox precision
 warning('off', 'MATLAB:nearlySingularMatrix') % matrix warning toggle
 
 % If planning to run on multiple cores:
 gcp(); % Create a pool with the default settings
 spmd       % Issue commands to all workers in pool (Single Program, Multiple Data)
   warning('off', 'MATLAB:nearlySingularMatrix') % Precision warning toggle
-  mp.Digits(50);                                % mp toolbox precision setup
+  mp.Digits(150);                                % mp toolbox precision setup
 end
 %}
 function [results] = thermophoneSimulationExample()
+close all
 %% Configure simulation options:
 simOpts = thermophoneSimOpts(); % options object with default settings, details can be changed later
 simOpts.N_Omega = 1; % Example for "changing it later"
 % simOpts.optim = 0; % Example for "changing it later"
 
+%{
 %% Configure thermophone layer structure(s):
 TPH = [Layer_models.FluidLayer("label", "Air", 'L', 0, ...
         'rho', 1.2, 'B', 1.01E5, 'alpha', 3.33E-3, 'lambda', 1.68E-5,...
@@ -45,8 +47,10 @@ TPH = [Layer_models.FluidLayer("label", "Air", 'L', 0, ...
         'mu', 5.61 * 10^-6, 'Cp', 9.96 * 10^2, 'Cv', 7.17 * 10^2, 'k', 2.62 * 10^-2,...
         'sL', 0, 's0', 0, 'sR', 0, 'hL', 10, 'hR', 0)];
 
+    % This is the 20 different cases we see
 configs = repmat({TPH}, 1, 20); % This simulates defining additional configurations
-
+%}
+[configs] = Verification_cases();
 %% Run the solver
 nConf = numel(configs);
 results(nConf,1) = thermophoneSimResults;
@@ -60,10 +64,16 @@ else
   for indC = 1:nConf
     % Here we usually solve for many frequencies, internal parfor will kick in
     results(indC) = Backend_codes.Solution_function(configs{indC}.toMatrix(), tmp);
+    
   end  
 end
 
 %% Plot the results
-% Backend_codes.plot_res(PRES1, PRES2, ETA1, ETA2, T, q, v, p, TM, qM, vM, pM, T_m, T_Mm, Omega, Posx, cumLo, MDM(:, 1), N_layers);
+for i=1:numel(results)
+ Backend_codes.plot_res(results(i).PRES1, results(i).PRES2, results(i).ETA1, results(i).ETA2, results(i).T, results(i).q, results(i).v, results(i).p, results(i).TM, results(i).qM, results(i).vM, results(i).pM, results(i).T_m, results(i).T_Mm, results(i).Omega, results(i).Posx, results(i).cumLo, results(i).MDM(:, 1), results(i).N_layers);
+end
+
+end
+
 
 %% ==================================================================== %%

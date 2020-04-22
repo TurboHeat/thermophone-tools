@@ -3,7 +3,7 @@ function [BCI, Hamat, w1_c, w2_c, Smat, Hbmat, SCALE] = T_system_solver2(Omega, 
 [w1_c, w2_c] = deal(mp(complex(zeros(N_layers, 1))));
 Hamat = mp(complex(ones(4,4,N_layers)));
 [Hbmat, invHbmat] = deal(mp(complex(zeros(4,4,N_layers))));
-Smat = mp(complex(zeros(N_layers, 4)));
+Smat = mp(complex(zeros(4,N_layers)));
 
 for k = 1:N_layers
   
