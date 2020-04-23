@@ -14,11 +14,11 @@ classdef thermophoneSimOpts
     OmegaL(1,1) double {mustBeNonnegative, mustBeFinite} = 50000 * 2 * pi; % [rad/s]
     N_Omega(1,1) uint16 {mustBeInteger} = 300; % [unitless]
     %% x-location sweep
-    maxX(1,1) double {mustBeNonnegative, mustBeFinite} = 20 * 10^-5; % [m]
-    N_x(1,1) uint16 {mustBePositive, mustBeInteger} = 1; % [unitless]
+    maxX(1,1) double {mustBeNonnegative, mustBeFinite} = 20 * 10^-7; % [m]
+    N_x(1,1) uint16 {mustBePositive, mustBeInteger} = 1000; % [unitless]
     %% Switches / flags
-    xres(1,1) logical = false; % switch for calculating spatial information (only really needed for in-depth analysis)
-    optim(1,1) logical = true; % are you performing an optimization analysis?
+    xres(1,1) logical = true; % switch for calculating spatial information (only really needed for in-depth analysis)
+    optim(1,1) logical = false; % are you performing an optimization analysis?
     %% Initial Ambient temperature
     T_amb(1,1) double {mustBeNonnegative, mustBeFinite} = 3 * 10^2; % [K]
     %% Location of Thermophone layer (used in the efficiency calculation)

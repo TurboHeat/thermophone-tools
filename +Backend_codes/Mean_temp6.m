@@ -1,4 +1,5 @@
 function [T, q] = Mean_temp6(MDM, N_layers, cumLo)
+
 %Initialisation of all Kernels
 A = zeros(1, N_layers);
 B = A;
@@ -13,6 +14,10 @@ A(2) = (cumLo(3) + ((MDM(2, 9) / (MDM(1, 15) + MDM(2, 13))) - cumLo(2)));
 B(2) = ((MDM(2, 11)) * (cumLo(2)) * ((cumLo(2) / (2 * MDM(2, 9))) - (1 / (MDM(1, 15) + MDM(2, 13)))) + (MDM(1, 12) - (MDM(2, 10)))) - (MDM(2, 11) * (cumLo(3)^2)) / (2 * MDM(2, 9));
 C(2) = -(((MDM(2, 15) + MDM(3, 13)) * (cumLo(3) + ((MDM(2, 9) / (MDM(1, 15) + MDM(2, 13))) - cumLo(2)))) + MDM(2, 9));
 D(2) = ((MDM(2, 11)) * (cumLo(3))) + (MDM(2, 12) - MDM(3, 10)) - (MDM(2, 15) + MDM(3, 13)) * (((MDM(2, 11)) * (cumLo(2)) * ((cumLo(2) / (2 * MDM(2, 9))) - (1 / (MDM(1, 15) + MDM(2, 13)))) + (MDM(1, 12) - (MDM(2, 10)))) - (MDM(2, 11) * (cumLo(3)^2)) / (2 * MDM(2, 9)));
+
+M(2) = ((MDM(2, 10) + (MDM(2, 11) * cumLo(2))) / MDM(2, 9));
+N(2) = -1 / MDM(2, 9);
+O(2) = (((MDM(2, 11)) * ((cumLo(2))^2)) / (2 * MDM(2, 9)));
 
 % If there are more than 3 layers, we compute the rest iteratively
 if N_layers > 3
@@ -60,8 +65,8 @@ for k = 2:N_layers - 1
   mean_c(k, 2) = pTa{k-1} - N(k) * pqa{k-1} * cumLo(k) - M(k) * cumLo(k) + O(k);
 
   % Temperature and heat-flux at the ith interface
-  pTa{k} = A(k) * mean_c(k, 1) + B(k);
-  pqa{k} = C(k) * mean_c(k, 1) + D(k);
+  pTa{k} = A(k) * mean_c(1, 1) + B(k);
+  pqa{k} = C(k) * mean_c(1, 1) + D(k);
 
   % Temperature solution with solved coefficients prepared into matlab function for future use
   T{k} = matlabFunction(mean_c(k, 1)*(x)+mean_c(k, 2)-((MDM(k, 11)) * (x)^2)/(2 * MDM(k, 9)));

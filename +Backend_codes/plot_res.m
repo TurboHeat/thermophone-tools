@@ -73,7 +73,7 @@ if numel(Posx) ~= 1
   
   f = figure(7);
   hold all;
-  plotfunc(N_layers, T(1, :), L0, Posx, cumLo);
+  Backend_codes.plotfunc(N_layers, T(1, :), L0, Posx, cumLo);
   plot(cumLo(2:N_layers)-(max(cumsum(L0)) / 2), abs(TM(1, 2:N_layers)), 'o');
   title('Medium 1 Oscillating Temperature field');
   xlabel('$x$-location', 'fontsize', 14, 'interpreter', 'latex')
@@ -82,7 +82,7 @@ if numel(Posx) ~= 1
   
   f = figure(8);
   hold all;
-  plotfunc(N_layers, q(1, :), L0, Posx, cumLo);
+  Backend_codes.plotfunc(N_layers, q(1, :), L0, Posx, cumLo);
   plot(cumLo(2:N_layers)-(max(cumsum(L0)) / 2), abs(qM(1, 2:N_layers)), 'o');
   title('Medium 1 Oscillating Heat flux field');
   xlabel('$x$-location', 'fontsize', 14, 'interpreter', 'latex')
@@ -91,7 +91,7 @@ if numel(Posx) ~= 1
   
   f = figure(9);
   hold all;
-  plotfunc(N_layers, v(1, :), L0, Posx, cumLo);
+  Backend_codes.plotfunc(N_layers, v(1, :), L0, Posx, cumLo);
   plot(cumLo(2:N_layers)-(max(cumsum(L0)) / 2), abs(vM(1, 2:N_layers)), 'o');
   title('Oscillating Velocity field');
   xlabel('$x$-location', 'fontsize', 14, 'interpreter', 'latex')
@@ -100,7 +100,7 @@ if numel(Posx) ~= 1
   
   f = figure(10);
   hold all;
-  plotfunc(N_layers, p(1, :), L0, Posx, cumLo);
+  Backend_codes.plotfunc(N_layers, p(1, :), L0, Posx, cumLo);
   plot(cumLo(2:N_layers)-(max(cumsum(L0)) / 2), abs(pM(1, 2:N_layers)), 'o');
   title('Oscillating Pressure field');
   xlabel('$x$-location', 'fontsize', 14, 'interpreter', 'latex')
@@ -109,7 +109,7 @@ if numel(Posx) ~= 1
   
   f = figure(13);
   hold all;
-  plotfunc(N_layers, T_m(1, :), L0, Posx, cumLo);
+  Backend_codes.plotfunc(N_layers, T_m(1, :), L0, Posx, cumLo);
   plot(cumLo(2:N_layers)-(max(cumsum(L0)) / 2), abs(T_Mm(1, 2:N_layers)), 'o');
   title('Mean temperature distribution');
   xlabel('$x$-location', 'fontsize', 14, 'interpreter', 'latex')

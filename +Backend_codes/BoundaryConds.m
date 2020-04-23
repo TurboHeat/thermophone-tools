@@ -25,7 +25,7 @@ f = fliplr(1:N_layers);
 
 % Preallocation
 [ invH,  H,  HH,  S,  invaS,  SuminvaS,  Mo] = deal(cell(Nrounds,1));
-[ invHb, Hb, HHb, Sb, invaSb, SuminvaSb, Mob] = deal(cell(f(1),1));
+[ invHb, Hb, HHb, Sb, invaSb, SuminvaSb, Mob] = deal(cell(Nrounds,1));
 
 % First layer Initialisation of the solution kernels
 [Mo{1}, Mob{1}, Mob{N_layers}] = deal(eye(size(Hamat(:,:,1))));
@@ -86,12 +86,12 @@ BCI(:, [1,k]) = tmp;
 BCI2(:, [1,f(1)]) = tmp;
 
 % TEST: BCI and BCI2 should be the same.
-%{
+
 for k = 2:Nrounds
   BCI(:, k) = Mo{k} * tmp(:,1) + SuminvaS{k};
   BCI2(:, f(k)) = Mob{f(k)} * tmp(:,2) + SuminvaSb{f(k)};
 end
-%}
+
 
 BCI = [BCI(:, 1:Nrounds), BCI2(:, Nrounds+1:N_layers)];
 

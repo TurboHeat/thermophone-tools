@@ -89,7 +89,7 @@ parfor k = 1:maxO
   
   % Function that solves the boundary conditions dan finds the matrix of constants (solutions) for each layer
   [BCI, Hamat, w1_c, ~, Smat, Hbmat, SCALE] = Backend_codes.T_system_solver2(Omegamp(k), MDMmp, N_layers, cumLomp);
-  
+
   %% ==================================================================== %%
   % !!!!!!!!!! OPTIONAL !!!!!!!!!! %
   if d13 == 1
@@ -99,10 +99,10 @@ parfor k = 1:maxO
     for que = 1:Nq % x-position loop
       % Applying the solution to a specific x-location (not vital)
       field = Backend_codes.Interrogation(Hamat, Hbmat, Smat, cumLo, Posx(que), N_layers, BCI, T_mean, SCALE);
-      p(k, que) = field(1, :);
-      v(k, que) = field(2, :);
-      q(k, que) = field(3, :); ...
-        T(k, que) = field(4, :);
+      p(k, que)   = field(1, :);
+      v(k, que)   = field(2, :);
+      q(k, que)   = field(3, :);
+      T(k, que)   = field(4, :);
       T_m(k, que) = field(5, :);
     end
     
@@ -112,10 +112,10 @@ parfor k = 1:maxO
     for que = 2:N_layers % x-position loop
       % Finding the solution at the boundary interfaces (not vital)
       field = Backend_codes.Interrogation(Hamat, Hbmat, Smat, cumLo, que, N_layers, BCI, T_mean, SCALE);
-      lpM(que) = field(1, :);
-      lvM(que) = field(2, :);
-      lqM(que) = field(3, :);
-      lTM(que) = field(4, :);
+      lpM(que)   = field(1, :);
+      lvM(que)   = field(2, :);
+      lqM(que)   = field(3, :);
+      lTM(que)   = field(4, :);
       lT_Mm(que) = field(5, :);
     end
     
