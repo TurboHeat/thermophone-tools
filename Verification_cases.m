@@ -109,11 +109,7 @@ TPH5 = [Layer_models.FluidLayer("label", "Air", 'L', 0, ...
  TPH4: air - gold - air    - air
  TPH5: air - gold - air    - air  - air
  %}
-    configs(1,1)={TPH};   
-    configs(1,2)={TPH2};
-    configs(1,3)={TPH3};
-    configs(1,4)={TPH4};   
-    configs(1,5)={TPH5};
-    
+ 
+configs = {TPH, TPH2, TPH3, TPH4, TPH5}; 
 end
 
