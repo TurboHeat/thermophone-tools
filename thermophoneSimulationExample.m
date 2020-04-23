@@ -44,8 +44,8 @@ else
 end
 
 %% Plot the results
-for i=1:numel(results)
- Backend_codes.plot_res(results(i).PRES1, results(i).PRES2, results(i).ETA1, results(i).ETA2, results(i).T, results(i).q, results(i).v, results(i).p, results(i).TM, results(i).qM, results(i).vM, results(i).pM, results(i).T_m, results(i).T_Mm, results(i).Omega, results(i).Posx, results(i).cumLo, results(i).MDM(:, 1), results(i).N_layers);
+for k=1:numel(results)
+ Backend_codes.plot_res(results(k).PRES1, results(k).PRES2, results(k).ETA1, results(k).ETA2, results(k).T, results(k).q, results(k).v, results(k).p, results(k).TM, results(k).qM, results(k).vM, results(k).pM, results(k).T_m, results(k).T_Mm, results(k).Omega, results(k).Posx, results(k).cumLo, results(k).MDM(:, 1), results(k).N_layers);
 end
 
 end
