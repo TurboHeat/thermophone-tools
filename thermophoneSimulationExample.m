@@ -9,14 +9,14 @@ timeit(@thermophoneSimulationExample)
 %% Preparations:
 %{
 # If planning to run on a single core:
-mp.Digits(150); % mp toolbox precision
+mp.Digits(50); % mp toolbox precision
 warning('off', 'MATLAB:nearlySingularMatrix') % matrix warning toggle
 
 % If planning to run on multiple cores:
 gcp(); % Create a pool with the default settings
 spmd       % Issue commands to all workers in pool (Single Program, Multiple Data)
   warning('off', 'MATLAB:nearlySingularMatrix') % Precision warning toggle
-  mp.Digits(150);                                % mp toolbox precision setup
+  mp.Digits(50);                                % mp toolbox precision setup
 end
 %}
 function [results] = thermophoneSimulationExample()
@@ -45,7 +45,7 @@ end
 
 %% Plot the results
 for k=1:numel(results)
- Backend_codes.plot_res(results(k).PRES1, results(k).PRES2, results(k).ETA1, results(k).ETA2, results(k).T, results(k).q, results(k).v, results(k).p, results(k).TM, results(k).qM, results(k).vM, results(k).pM, results(k).T_m, results(k).T_Mm, results(k).Omega, results(k).Posx, results(k).cumLo, results(k).MDM(:, 1), results(k).N_layers);
+ Backend_codes.plot_res(results(k).PRES1, results(k).PRES2, results(k).ETA1, results(k).ETA2, results(k).T, results(k).q, results(k).v, results(k).p, results(k).TM, results(k).qM, results(k).vM, results(k).pM, results(k).T_m, results(k).T_Mm, results(k).Omega, results(k).Posx, results(k).cumLo, results(k).MDM(:, 1), results(k).N_layers); ...
 end
 
 end
