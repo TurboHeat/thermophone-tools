@@ -165,7 +165,8 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
     end
     
   end % protected static methods
-
+  
+  %% Actual public methods
   methods (Access = public, Sealed = true)
     function MDM = toMatrix(obj)
       % !! Temporary function !! until the solver function is refactored to use object
@@ -174,8 +175,35 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
         [obj.mu].', [obj.Cp].', [obj.Cv].', [obj.k].', [obj.sL].', [obj.s0].', ...
         [obj.sR].', [obj.hL].', [obj.T0].', [obj.hR].'];
     end
+    
+    function applySimOptions(layers, opts)
+      % This function initializes some layer parameters based on the simulation options
+      arguments
+        layers(:,1) LayerModels.Layer
+        opts(1,1) thermophoneSimOpts
+      end
+      
+      area = opts.Ly * opts.Lz;
+      for indL = 1:numel(layers)
+        %% Overall power input:        
+        layers(indL).sL = layers(indL).sL / area;
+        layers(indL).s0 = layers(indL).s0 / area / layers(indL).L;
+        layers(indL).sR = layers(indL).sR / area;
+        
+        %% Internal mean temperature:
+        if layers(indL).T0 == 0
+          if layers(indL).Cp == layers(indL).Cv % The case of a solid
+            layers(indL).T0 = opts.T_amb;
+          else
+            layers(indL).T0 = layers(indL).rho * ...
+              (layers(indL).Cp - layers(indL).Cv) / ...
+              (layers(indL).B * layers(indL).alpha.^2);
+          end
+        end
+      end
+      
+    end
   end
-  
   %% Custom display methods
   methods (Access = protected, Sealed = true)
 
