@@ -91,7 +91,7 @@ in the order in which they appear. The column inputs are as follows:
     ```
 
 1. **Running in `parfor` mode**  
-If `Backend_codes.Solution_function` is configured to run using `parfor`, it is necessary to initialize the `mp` toolbox on each node (i.e. worker of the parallel pool) using the following commands:
+If `Backend.solutionFunc` is configured to run using `parfor`, it is necessary to initialize the `mp` toolbox on each node (i.e. worker of the parallel pool) using the following commands:
 
     ```matlab
     gcp(); % Create a pool with the default settings (if needed)
@@ -104,5 +104,5 @@ If `Backend_codes.Solution_function` is configured to run using `parfor`, it is 
 1. **Enabling/disabling the progress bar**  
 A progress bar visualizes the progress of loop `for` or `parfor` A progress bar is always associated with some overhead, however, in cases where individual loop iterations are very short (i.e. the "business logic" takes a short time to execute), the overhead can be the main performance sink - as happens in this case - which is why it is commented out in the code. 
 
-    The `ParforProgressbar` utility is bundled with the code as a Git submodule. To enable `progressbar` one must add it to MATLAB's path (e.g. `addpath(fullfile(pwd, 'progressbar'));`), and uncomment the lines related to `ppm` in `Solution_function.m` (3 lines in total).
+    The `ParforProgressbar` utility is bundled with the code as a Git submodule. To enable `progressbar` one must add it to MATLAB's path (e.g. `addpath(fullfile(pwd, 'progressbar'));`), and uncomment the lines related to `ppm` in `solutionFunc.m` (3 lines in total).
     

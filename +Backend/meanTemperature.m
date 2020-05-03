@@ -1,4 +1,4 @@
-function [T, q] = Mean_temp6(MDM, N_layers, cumLo)
+function [T, q] = meanTemperature(MDM, N_layers, cumLo)
 
 %Initialisation of all Kernels
 A = zeros(1, N_layers);

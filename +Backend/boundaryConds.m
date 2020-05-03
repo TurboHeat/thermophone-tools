@@ -1,4 +1,4 @@
-function [BCI] = BoundaryConds(MDM, Hamat, Smat, N_layers, cumLo, Hbmat, invHbmat, SCALE)
+function [BCI] = boundaryConds(MDM, Hamat, Smat, N_layers, cumLo, Hbmat, invHbmat, SCALE)
 cumLo = cumLo / SCALE;
 
 %% ----------------------------------------------------------------------%%

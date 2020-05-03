@@ -48,7 +48,7 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
       % A protected/private constructor means this class cannot be instantiated
       % externally, but only through a subclass.
       arguments
-        props.?Layer_models.Layer
+        props.?LayerModels.Layer
       end
       
       %% Special initialization:
@@ -70,63 +70,63 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
   methods
     
     function set.L(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end 
     
     function set.rho(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.B(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.alpha(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.mu(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.lambda(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.Cp(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.Cv(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.k(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.sL(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.s0(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
             
     function set.sR(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
             
     function set.hL(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
             
     function set.T0(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
             
     function set.hR(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
     
   end % no-attribute methods
@@ -134,9 +134,9 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
   %% Pseudo-protected implementation
   methods (Access = protected, Static = true)
     function name = protectedSet(callstack)
-      name = Layer_models.Layer.propnameFromCallstack(callstack);
-      if ~(Layer_models.Layer.getCallerMetaclass(callstack(2:end)) <= ?Layer_models.Layer)
-        Layer_models.Layer.throwUnprotectedAccess(name);
+      name = LayerModels.Layer.propnameFromCallstack(callstack);
+      if ~(LayerModels.Layer.getCallerMetaclass(callstack(2:end)) <= ?LayerModels.Layer)
+        LayerModels.Layer.throwUnprotectedAccess(name);
       end
     end
     
@@ -184,7 +184,7 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
     end
     
     function displayNonScalarObject(obj)
-      tab = [table(string(erase(arrayfun(@class, obj, 'UniformOutput', false), 'Layer_models.')), ...
+      tab = [table(string(erase(arrayfun(@class, obj, 'UniformOutput', false), 'LayerModels.')), ...
               [obj.label].', 'VariableNames', ["Type", "Label"]), ...
              array2table(obj.toMatrix(), 'VariableNames', ["L", "ρ", "B", "α_T",...
                "λ", "μ", "c_p", "c_v", "κ", "S_L", "S_0", "S_R", "h_L", "T_0", "h_R"])];

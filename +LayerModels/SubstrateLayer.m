@@ -1,6 +1,6 @@
-classdef ThermophoneLayer < Layer_models.Layer
-  %THERMOPHONELAYER A layer representing the electrically conductive material where
-  %power is put in.
+classdef SubstrateLayer < LayerModels.Layer
+  %SUBSTRATELAYER The substrate layer is any other non-thermophone layer that 
+  %provides a structural base upon which thermophone layers are built.
   
   properties (GetAccess = public, SetAccess = public)
     % Subclass-specific properties
@@ -10,9 +10,9 @@ classdef ThermophoneLayer < Layer_models.Layer
   
   methods (Access = public)
     %% Constructor
-    function layerObj = ThermophoneLayer(props)
+    function layerObj = SubstrateLayer(props)
       arguments
-        props.?Layer_models.ThermophoneLayer
+        props.?LayerModels.SubstrateLayer
       end
       
       %% Special initialization:
@@ -25,7 +25,7 @@ classdef ThermophoneLayer < Layer_models.Layer
       
       %% Create superclass:
       propsKV = namedargs2cell(rmfield(props, 'Y'));
-      layerObj = layerObj@Layer_models.Layer(propsKV{:});
+      layerObj = layerObj@LayerModels.Layer(propsKV{:});
       
       %% Custom modifications:
       % Bring back the field(s) not passed to the superclass constructor
@@ -37,11 +37,11 @@ classdef ThermophoneLayer < Layer_models.Layer
     
   end % public methods
   
-  %% Setters & Getters
+  %% Setters & Getters  
   methods
     
     function set.Y(obj, val)
-      obj.(Layer_models.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
     
   end

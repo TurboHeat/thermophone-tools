@@ -24,28 +24,28 @@ function [results] = thermophoneSimulationExample()
 simOpts = thermophoneSimOpts(); % options object with default settings, details can be changed later
 simOpts.N_Omega = 1; % Example for "changing it later"
 % simOpts.optim = 0; % Example for "changing it later"
-[configs] = Verification_cases();
+[configs] = verificationCases();
 
 %% Run the solver
 nConf = numel(configs);
-results(nConf,1) = thermophoneSimResults;
+results(nConf,1) = thermophoneSimResults();
 tmp = simOpts.toMatrix(); % temporary hack
 if simOpts.optim  
   parfor indC = 1:nConf
     % Here we usually solve for 1 frequency
-    results(indC) = Backend_codes.Solution_function_opt(configs{indC}.toMatrix(), tmp);
+    results(indC) = Backend.solutionFuncOptim(configs{indC}.toMatrix(), tmp);
   end
 else
   for indC = 1:nConf
     % Here we usually solve for many frequencies, internal parfor will kick in
-    results(indC) = Backend_codes.Solution_function(configs{indC}.toMatrix(), tmp);
+    results(indC) = Backend.solutionFunc(configs{indC}.toMatrix(), tmp);
     
   end  
 end
 
 %% Plot the results
-for k=1:numel(results)
- Backend_codes.plot_res(results(k).PRES1, results(k).PRES2, ...
+for k = 1:numel(results)
+ Plotting.plotResultsObj(results(k).PRES1, results(k).PRES2, ...
      results(k).ETA1, results(k).ETA2, results(k).T, results(k).q, ...
      results(k).v, results(k).p, results(k).TM, results(k).qM, ...
      results(k).vM, results(k).pM, results(k).T_m, results(k).T_Mm, ...

@@ -1,4 +1,4 @@
-function plot_res(PRES1, PRES2, ~, ~, T, q, v, p, TM, qM, vM, pM, T_m, T_Mm, Omega, Posx, cumLo, L0, N_layers)
+function [] = plotResultsObj(PRES1, PRES2, ~, ~, T, q, v, p, TM, qM, vM, pM, T_m, T_Mm, Omega, Posx, cumLo, L0, N_layers)
 
 %% Plotting frequency dependent plot
 if numel(Omega) ~= 1
@@ -73,7 +73,7 @@ if numel(Posx) ~= 1
   
   f = figure(7);
   hold all;
-  Backend_codes.plotfunc(N_layers, T(1, :), L0, Posx, cumLo);
+  plotFunc(N_layers, T(1, :), L0, Posx, cumLo);
   plot(cumLo(2:N_layers)-(max(cumsum(L0)) / 2), abs(TM(1, 2:N_layers)), 'o');
   title('Medium 1 Oscillating Temperature field');
   xlabel('$x$-location', 'fontsize', 14, 'interpreter', 'latex')
@@ -82,7 +82,7 @@ if numel(Posx) ~= 1
   
   f = figure(8);
   hold all;
-  Backend_codes.plotfunc(N_layers, q(1, :), L0, Posx, cumLo);
+  plotFunc(N_layers, q(1, :), L0, Posx, cumLo);
   plot(cumLo(2:N_layers)-(max(cumsum(L0)) / 2), abs(qM(1, 2:N_layers)), 'o');
   title('Medium 1 Oscillating Heat flux field');
   xlabel('$x$-location', 'fontsize', 14, 'interpreter', 'latex')
@@ -91,7 +91,7 @@ if numel(Posx) ~= 1
   
   f = figure(9);
   hold all;
-  Backend_codes.plotfunc(N_layers, v(1, :), L0, Posx, cumLo);
+  plotFunc(N_layers, v(1, :), L0, Posx, cumLo);
   plot(cumLo(2:N_layers)-(max(cumsum(L0)) / 2), abs(vM(1, 2:N_layers)), 'o');
   title('Oscillating Velocity field');
   xlabel('$x$-location', 'fontsize', 14, 'interpreter', 'latex')
@@ -100,7 +100,7 @@ if numel(Posx) ~= 1
   
   f = figure(10);
   hold all;
-  Backend_codes.plotfunc(N_layers, p(1, :), L0, Posx, cumLo);
+  plotFunc(N_layers, p(1, :), L0, Posx, cumLo);
   plot(cumLo(2:N_layers)-(max(cumsum(L0)) / 2), abs(pM(1, 2:N_layers)), 'o');
   title('Oscillating Pressure field');
   xlabel('$x$-location', 'fontsize', 14, 'interpreter', 'latex')
@@ -109,7 +109,7 @@ if numel(Posx) ~= 1
   
   f = figure(13);
   hold all;
-  Backend_codes.plotfunc(N_layers, T_m(1, :), L0, Posx, cumLo);
+  plotFunc(N_layers, T_m(1, :), L0, Posx, cumLo);
   plot(cumLo(2:N_layers)-(max(cumsum(L0)) / 2), abs(T_Mm(1, 2:N_layers)), 'o');
   title('Mean temperature distribution');
   xlabel('$x$-location', 'fontsize', 14, 'interpreter', 'latex')
@@ -119,4 +119,13 @@ if numel(Posx) ~= 1
   
 end
 
+end
+
+function plotFunc(N_layers, G, L0, Posx, cumLo)
+hold all
+for k = 2:1:(N_layers)
+  plot([cumLo(k), cumLo(k)]-(max(cumsum(L0)) / 2), [min(abs(G)), max(abs(G))], '-r')
+end
+plot(Posx-(max(cumsum(L0)) / 2), abs(G))
+grid on
 end

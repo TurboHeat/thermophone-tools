@@ -1,4 +1,25 @@
-function [results] = Solution_function_opt(MDM, dimensions)
+function [results] = solutionFunc(MDM, dimensions)
+%% Outputs
+% ETA1     - Array of efficiencies from back side [thermal product, thermal, acoustic, gamma, total]
+% ETA2     - Array of efficiencies from front side [thermal product, thermal, acoustic, gamma, total]
+% PRES1    - Array of pressures from front side [pk Far Field, rms Far Field, rms Near Field, Phase]
+% PRES2    - Array of pressures from back side [pk Far Field, rms Far Field, rms Near Field, Phase]
+% T        - Oscillating Temperature result at interrogation point(s)
+% q        - Oscillating Heat-flux result at interrogation point(s)
+% v        - Oscillating velocity result at interrogation point(s)
+% p        - Oscillating pressure result at interrogation point(s)
+% TM       - Oscillating Temperature result at Layer boundaries
+% qM       - Oscillating Heat-flux result at Layer boundaries
+% vM       - Oscillating velocity result at Layer boundaries
+% pM       - Oscillating pressure result at Layer boundaries
+% T_m      - Steady-State Mean temperature at interrogation point(s)
+% T_Mm     - Steady-State Mean temperature at Layer boundaries
+% Omega    - Angular frequency array
+% Posx     - X-location array
+% cumLo    - Cumulative layer thickness
+% MDM      - OUTPUT of parameter-layer matrix
+% N_layers - Number of Layers in build
+
 %% Overall power input
 MDM(:, 10:12) = MDM(:, 10:12) / (dimensions(1) * dimensions(2));
 P_in = sum(MDM(:, 10:12), 'all');
@@ -14,6 +35,10 @@ N_layers = size(MDM, 1);
 %% Cumulative thickness
 cumLo = cumsum(MDM(:, 1));
 cumLo = [cumLo(1); cumLo];
+
+%% steady-State mean temperature calculation
+% !!!!!!!!!! OPTIONAL !!!!!!!!!! %
+[T_mean, ~] = Backend.meanTemperature(double(MDM), double(N_layers), double(cumLo));
 
 %% ==================================================================== %%
 
@@ -55,6 +80,7 @@ cumLomp = mp(cumLo);
 MDM_2 = MDM(1,2);
 MDM_7 = MDM(1,7);
 MDM_9 = MDM(1,9);
+d13 = dimensions(13);
 
 % ppm = ParforProgressbar(maxO, 'showWorkerProgress', true, 'progressBarUpdatePeriod', 0.5);
 parfor k = 1:maxO
@@ -62,7 +88,38 @@ parfor k = 1:maxO
   [lpM, lTM, lvM, lqM, lT_Mm] = deal(complex(zeros(1, N_layers+1)));
   
   % Function that solves the boundary conditions dan finds the matrix of constants (solutions) for each layer
-  [BCI, Hamat, w1_c, ~, Smat, Hbmat, SCALE] = Backend_codes.T_system_solver2(Omegamp(k), MDMmp, N_layers, cumLomp);
+  [BCI, Hamat, w1_c, ~, Smat, Hbmat, SCALE] = Backend.systemSolver(Omegamp(k), MDMmp, N_layers, cumLomp);
+
+  %% ==================================================================== %%
+  % !!!!!!!!!! OPTIONAL !!!!!!!!!! %
+  if d13 == 1
+    
+    % If the user is not interested in viewing the spatial distribution
+    % of the result, this loop can be removed.
+    for que = 1:Nq % x-position loop
+      % Applying the solution to a specific x-location (not vital)
+      field = Backend.interrogation(Hamat, Hbmat, Smat, cumLo, Posx(que), N_layers, BCI, T_mean, SCALE);
+      p(k, que)   = field(1, :);
+      v(k, que)   = field(2, :);
+      q(k, que)   = field(3, :);
+      T(k, que)   = field(4, :);
+      T_m(k, que) = field(5, :);
+    end
+    
+    % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    % If the user is not interested in obtaining the spatial interface conditions, this loop can be removed.
+    % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    for que = 2:N_layers % x-position loop
+      % Finding the solution at the boundary interfaces (not vital)
+      field = Backend.interrogation(Hamat, Hbmat, Smat, cumLo, que, N_layers, BCI, T_mean, SCALE);
+      lpM(que)   = field(1, :);
+      lvM(que)   = field(2, :);
+      lqM(que)   = field(3, :);
+      lTM(que)   = field(4, :);
+      lT_Mm(que) = field(5, :);
+    end
+    
+  end
   
   %% ==================================================================== %%
   
@@ -70,14 +127,14 @@ parfor k = 1:maxO
   % These are needed to determine the propagation from the front and back
   % boundaries
   
-  field = Backend_codes.Interrogation_opt(Hamat, Hbmat, Smat, cumLo, cumLo(1)-(2 * (MDM_9 / (2 * MDM_7 * Omega(k) * MDM_2))^(1 / 2)), N_layers, BCI, SCALE);
+  field = Backend.interrogation(Hamat, Hbmat, Smat, cumLo, cumLo(1)-(2 * (MDM_9 / (2 * MDM_7 * Omega(k) * MDM_2))^(1 / 2)), N_layers, BCI, T_mean, SCALE);
   lpM(1) = field(1, :);
   lvM(1) = field(2, :);
   lqM(1) = field(3, :);
   lTM(1) = field(4, :);
   lT_Mm(1) = field(5, :);
   
-  field = Backend_codes.Interrogation_opt(Hamat, Hbmat, Smat, cumLo, cumLo(end)+(2 * (MDM_9 / (2 * MDM_7 * Omega(k) * MDM_2))^(1 / 2)), N_layers, BCI, SCALE);
+  field = Backend.interrogation(Hamat, Hbmat, Smat, cumLo, cumLo(end)+(2 * (MDM_9 / (2 * MDM_7 * Omega(k) * MDM_2))^(1 / 2)), N_layers, BCI, T_mean, SCALE);
   lpM(N_layers+1) = field(1, :);
   lvM(N_layers+1) = field(2, :);
   lqM(N_layers+1) = field(3, :);
@@ -110,7 +167,7 @@ kay2 = double(kay2);
   eta_aco_1, eta_aco_2, ...
   eta_Conv_1, eta_Conv_2, ...
   eta_Tot_1, eta_Tot_2] = ...
-  Backend_codes.Efficiency_calc(qM, vM, dimensions(12), N_layers, P_in, MDM);
+  Backend.efficiencyCalc(qM, vM, dimensions(12), N_layers, P_in, MDM);
 
 % Array with all the different efficiency calculations collated together
 ETA1 = [eta_TP_1, eta_Therm, eta_aco_1, ones(size(eta_aco_1)) .* eta_Conv_1, eta_Tot_1];
@@ -119,7 +176,7 @@ ETA2 = [eta_TP_2, eta_Therm, eta_aco_2, ones(size(eta_aco_1)) .* eta_Conv_2, eta
 % Calculation of the acoustic propagation
 [Mag_Pff_1, Mag_Prms_ff_1, Mag_Prms_nf_ff_1, Ph_Pff_1, ...
   Mag_Pff_2, Mag_Prms_ff_2, Mag_Prms_nf_ff_2, Ph_Pff_2] = ...
-  Backend_codes.Rayleigh_func(Ny, Nz, dimensions, MDM, kay1, kay2, vM, cumLo, maxO, Omega);
+  Backend.rayleighFunc(Ny, Nz, dimensions, MDM, kay1, kay2, vM, cumLo, maxO, Omega);
 
 % Array with all the different Pressure calculations collated together
 PRES1 = [Mag_Pff_1.', Mag_Prms_ff_1.', Mag_Prms_nf_ff_1.', Ph_Pff_1.'];

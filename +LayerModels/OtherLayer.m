@@ -1,6 +1,6 @@
-classdef InsulationLayer < Layer_models.Layer
-  %INSULATIONLAYER A layer whose sole purpose is to provide electrical insulation
-  %between a thermophone layer and another layer.
+classdef OtherLayer < LayerModels.Layer
+  %OTHERLAYER A layer that doesn't fit in other categories (for e.g. a glue/bonding
+  %layer that joins smooth and rough surfaces together).
 
   properties (GetAccess = public, SetAccess = public)
     % Subclass-specific properties
@@ -9,14 +9,14 @@ classdef InsulationLayer < Layer_models.Layer
   
   methods (Access = public)
     %% Constructor
-    function layerObj = InsulationLayer(props)
+    function layerObj = OtherLayer(props)
       arguments
-        props.?Layer_models.InsulationLayer
+        props.?LayerModels.OtherLayer
       end
       
       % Create superclass:
       propsKV = namedargs2cell(props);
-      layerObj = layerObj@Layer_models.Layer(propsKV{:});
+      layerObj = layerObj@LayerModels.Layer(propsKV{:});
       
       % Custom modifications:
       

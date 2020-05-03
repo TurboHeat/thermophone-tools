@@ -1,7 +1,7 @@
-classdef OtherLayer < Layer_models.Layer
-  %OTHERLAYER A layer that doesn't fit in other categories (for e.g. a glue/bonding
-  %layer that joins smooth and rough surfaces together).
-
+classdef BaseLayer < LayerModels.Layer
+  %BASELAYER A solid layer that is situated at the very bottom of a thermophone,
+  %stack and is therefore modelled as a semi-infinite layer.
+  
   properties (GetAccess = public, SetAccess = public)
     % Subclass-specific properties
     
@@ -9,14 +9,14 @@ classdef OtherLayer < Layer_models.Layer
   
   methods (Access = public)
     %% Constructor
-    function layerObj = OtherLayer(props)
+    function layerObj = BaseLayer(props)
       arguments
-        props.?Layer_models.OtherLayer
+        props.?LayerModels.BaseLayer
       end
       
       % Create superclass:
       propsKV = namedargs2cell(props);
-      layerObj = layerObj@Layer_models.Layer(propsKV{:});
+      layerObj = layerObj@LayerModels.Layer(propsKV{:});
       
       % Custom modifications:
       

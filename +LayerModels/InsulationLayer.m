@@ -1,7 +1,7 @@
-classdef FluidLayer < Layer_models.Layer
-  %FLUIDLAYER A layer representing some gas/liquid in which sound propagtes
-  % This is the only type of layer where lambda and mu cannot be set to 0.
-  
+classdef InsulationLayer < LayerModels.Layer
+  %INSULATIONLAYER A layer whose sole purpose is to provide electrical insulation
+  %between a thermophone layer and another layer.
+
   properties (GetAccess = public, SetAccess = public)
     % Subclass-specific properties
     
@@ -9,14 +9,14 @@ classdef FluidLayer < Layer_models.Layer
   
   methods (Access = public)
     %% Constructor
-    function layerObj = FluidLayer(props)
+    function layerObj = InsulationLayer(props)
       arguments
-        props.?Layer_models.FluidLayer
+        props.?LayerModels.InsulationLayer
       end
       
       % Create superclass:
       propsKV = namedargs2cell(props);
-      layerObj = layerObj@Layer_models.Layer(propsKV{:});
+      layerObj = layerObj@LayerModels.Layer(propsKV{:});
       
       % Custom modifications:
       

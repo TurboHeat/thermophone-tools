@@ -1,6 +1,6 @@
-classdef BaseLayer < Layer_models.Layer
-  %BASELAYER A solid layer that is situated at the very bottom of a thermophone,
-  %stack and is therefore modelled as a semi-infinite layer.
+classdef FluidLayer < LayerModels.Layer
+  %FLUIDLAYER A layer representing some gas/liquid in which sound propagtes
+  % This is the only type of layer where lambda and mu cannot be set to 0.
   
   properties (GetAccess = public, SetAccess = public)
     % Subclass-specific properties
@@ -9,14 +9,14 @@ classdef BaseLayer < Layer_models.Layer
   
   methods (Access = public)
     %% Constructor
-    function layerObj = BaseLayer(props)
+    function layerObj = FluidLayer(props)
       arguments
-        props.?Layer_models.BaseLayer
+        props.?LayerModels.FluidLayer
       end
       
       % Create superclass:
       propsKV = namedargs2cell(props);
-      layerObj = layerObj@Layer_models.Layer(propsKV{:});
+      layerObj = layerObj@LayerModels.Layer(propsKV{:});
       
       % Custom modifications:
       

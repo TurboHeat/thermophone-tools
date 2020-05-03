@@ -1,4 +1,4 @@
-function [interval, posx] = findinterval(cumLo, posx, N_layers)
+function [interval, posx] = findInterval(cumLo, posx, N_layers)
 
 interval = find(posx > cumLo, 1, 'last');
 if isempty(interval)
