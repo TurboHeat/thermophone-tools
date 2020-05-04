@@ -1,4 +1,4 @@
-function [BCI] = boundaryConds(MDM, Hamat, Smat, N_layers, cumLo, Hbmat, invHbmat, SCALE)
+function [BCI] = boundaryConds(MDM, Hamat, Smat, nLayers, cumLo, Hbmat, invHbmat, SCALE)
 cumLo = cumLo / SCALE;
 
 %% ----------------------------------------------------------------------%%
@@ -14,22 +14,22 @@ pad = [0, 0, 0, 0; 0, 0, 0, 0; 1, 1, 1, 1; 0, 0, 0, 0];
 
 %iterating for the least possible number of times in order to obtain the
 %solution Nrounds
-if N_layers / 2 == round(N_layers/2)
-  Nrounds = round(N_layers/2) + 1;
+if nLayers / 2 == round(nLayers/2)
+  Nrounds = round(nLayers/2) + 1;
 else
-  Nrounds = round(N_layers/2);
+  Nrounds = round(nLayers/2);
 end
 
 % Inverted index for Layer Boundary Condition Calculations
-f = fliplr(1:N_layers);
+f = fliplr(1:nLayers);
 
 % Preallocation
 [ invH,  H,  HH,  S,  invaS,  SuminvaS,  Mo] = deal(cell(Nrounds,1));
 [ invHb, Hb, HHb, Sb, invaSb, SuminvaSb, Mob] = deal(cell(Nrounds,1));
 
 % First layer Initialisation of the solution kernels
-[Mo{1}, Mob{1}, Mob{N_layers}] = deal(eye(size(Hamat(:,:,1))));
-[SuminvaS{1}, SuminvaSb{1}, SuminvaSb{N_layers}] = deal([0; 0; 0; 0]);
+[Mo{1}, Mob{1}, Mob{nLayers}] = deal(eye(size(Hamat(:,:,1))));
+[SuminvaS{1}, SuminvaSb{1}, SuminvaSb{nLayers}] = deal([0; 0; 0; 0]);
 
 % Invert Hamat
 %{
@@ -93,6 +93,6 @@ for k = 2:Nrounds
 end
 
 
-BCI = [BCI(:, 1:Nrounds), BCI2(:, Nrounds+1:N_layers)];
+BCI = [BCI(:, 1:Nrounds), BCI2(:, Nrounds+1:nLayers)];
 
 end

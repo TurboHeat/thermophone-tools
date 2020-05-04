@@ -1,7 +1,7 @@
-function [T, q] = meanTemperature(MDM, N_layers, cumLo)
+function [T, q] = meanTemperature(MDM, nLayers, cumLo)
 
 %Initialisation of all Kernels
-A = zeros(1, N_layers);
+A = zeros(1, nLayers);
 B = A;
 C = A;
 D = A;
@@ -20,8 +20,8 @@ N(2) = -1 / MDM(2, 9);
 O(2) = (((MDM(2, 11)) * ((cumLo(2))^2)) / (2 * MDM(2, 9)));
 
 % If there are more than 3 layers, we compute the rest iteratively
-if N_layers > 3
-  for k = 3:N_layers - 1
+if nLayers > 3
+  for k = 3:nLayers - 1
 
     %Calculation of kernels from the Temperature and heat flux
     %equations at the boundary between ith and i+1th layer
@@ -39,27 +39,27 @@ if N_layers > 3
 end
 
 % Closing the problem with the boundary conditions
-res1 = cumLo(N_layers) * M(N_layers-1) - M(N_layers-1) * cumLo(N_layers-1) + O(N_layers-1) - ((MDM(N_layers-1, 11)) * (cumLo(N_layers))^2) / (2 * MDM(N_layers-1, 9));
-res2 = (MDM(N_layers-1, 11) * (cumLo(N_layers))) - MDM(N_layers-1, 9) * M(N_layers-1);
-res3 = -((MDM(N_layers-1, 15) + MDM(N_layers, 13)));
-res4 = res2 + (MDM(N_layers-1, 12) - MDM(N_layers, 10)) + res3 * res1;
-res5 = ((res3 * (cumLo(N_layers) - cumLo(N_layers-1)) * N(N_layers-1)) - MDM(N_layers-1, 9) * N(N_layers-1));
+res1 = cumLo(nLayers) * M(nLayers-1) - M(nLayers-1) * cumLo(nLayers-1) + O(nLayers-1) - ((MDM(nLayers-1, 11)) * (cumLo(nLayers))^2) / (2 * MDM(nLayers-1, 9));
+res2 = (MDM(nLayers-1, 11) * (cumLo(nLayers))) - MDM(nLayers-1, 9) * M(nLayers-1);
+res3 = -((MDM(nLayers-1, 15) + MDM(nLayers, 13)));
+res4 = res2 + (MDM(nLayers-1, 12) - MDM(nLayers, 10)) + res3 * res1;
+res5 = ((res3 * (cumLo(nLayers) - cumLo(nLayers-1)) * N(nLayers-1)) - MDM(nLayers-1, 9) * N(nLayers-1));
 
 % Determining the constants of the first layer
-mean_c(1, 1) = -(res5 * D(N_layers-2) + res3 * B(N_layers-2) + res4) / ((res5 * C(N_layers-2) + res3 * A(N_layers-2)));
+mean_c(1, 1) = -(res5 * D(nLayers-2) + res3 * B(nLayers-2) + res4) / ((res5 * C(nLayers-2) + res3 * A(nLayers-2)));
 mean_c(1, 2) = (MDM(2, 10)) * (cumLo(2)) * (((cumLo(2)) / (2 * MDM(2, 9))) - (1 / (MDM(1, 15) + MDM(2, 13)))) + ...
                mean_c(1, 1) * ((MDM(2, 9) / (MDM(1, 15) + MDM(2, 13))) - cumLo(2)) + (MDM(1, 12) - (MDM(2, 10)));
 
 % Preallocation:
-[T,q] = deal(cell(N_layers,1));
-[pTa,pqa] = deal(cell(N_layers-1,1));
+[T,q] = deal(cell(nLayers,1));
+[pTa,pqa] = deal(cell(nLayers-1,1));
 
 % Temperature and heat-flux at the first interface
 pTa{1} = mean_c(1, 1) * (cumLo(2) + ((MDM(2, 9) / (MDM(1, 15) + MDM(2, 13))) - cumLo(2))) + ((MDM(2, 11)) * (cumLo(2)) * ((cumLo(2) / (2 * MDM(2, 9))) - (1 / (MDM(1, 15) + MDM(2, 13)))) + (MDM(1, 12) - (MDM(2, 10)))) - (MDM(2, 11) * (cumLo(2)^2)) / (2 * MDM(2, 9));
 pqa{1} = -MDM(2, 9) * (mean_c(1, 1)) + ((MDM(2, 11)) * (cumLo(2))) + (MDM(1, 12) - MDM(2, 10));
 
 syms x
-for k = 2:N_layers - 1
+for k = 2:nLayers - 1
   % Determining the constants of the ith layer
   mean_c(k, 1) = M(k) + N(k) * pqa{k-1};
   mean_c(k, 2) = pTa{k-1} - N(k) * pqa{k-1} * cumLo(k) - M(k) * cumLo(k) + O(k);
@@ -78,7 +78,7 @@ end
 %% Temperature and heat-flux solution in extremity layers
 T{1} = double(mean_c(1, 2));
 q{1} = double(mean_c(1, 1));
-T{N_layers} = A(N_layers-1) * mean_c(1, 1) + B(N_layers-1);
-q{N_layers} = C(N_layers-1) * mean_c(1, 1) + D(N_layers-1);
+T{nLayers} = A(nLayers-1) * mean_c(1, 1) + B(nLayers-1);
+q{nLayers} = C(nLayers-1) * mean_c(1, 1) + D(nLayers-1);
 
 end

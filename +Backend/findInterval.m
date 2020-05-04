@@ -1,8 +1,8 @@
-function [interval, posx] = findInterval(cumLo, posx, N_layers)
+function [interval, posx] = findInterval(cumLo, posx, nLayers)
 
 interval = find(posx > cumLo, 1, 'last');
 if isempty(interval)
   interval = 1;
 else
-  interval = min(interval, N_layers);
+  interval = min(interval, nLayers);
 end

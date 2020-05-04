@@ -1,7 +1,7 @@
 function [varargout] = plotResultsObj(resObj)
 %% Input validation:
 arguments
-  resObj(1,1) thermophoneSimResults
+  resObj(1,1) ThermophoneSimResults
 end
 %% Preallocation / Initialization:
 % hA = gobjects(13,1);
@@ -9,7 +9,8 @@ end
 % TODO: store intermediate hF & hA in the gobjects vectors.
 
 %% Unpacking:
-L0 = resObj.MDM(:, 1); L0(isinf(L0)) = 0;
+L0 = vertcat(resObj.layers.L); L0(isinf(L0)) = 0;
+nLayers = numel(resObj.layers);
 
 %% Plotting frequency dependent plot
 if numel(resObj.Omega) ~= 1
@@ -94,40 +95,40 @@ end
 if numel(resObj.Posx) ~= 1
   
   [hF, hAx] = getAx();
-  plotFunc(hAx, resObj.N_layers, resObj.T(1, :), L0, resObj.Posx, resObj.cumLo);
-  plot(hAx, resObj.cumLo(2:resObj.N_layers)-(max(cumsum(L0)) / 2), abs(resObj.TM(1, 2:resObj.N_layers)), 'o');
+  plotFunc(hAx, nLayers, resObj.T(1, :), L0, resObj.Posx, resObj.cumLo);
+  plot(hAx, resObj.cumLo(2:nLayers)-(max(cumsum(L0)) / 2), abs(resObj.TM(1, 2:nLayers)), 'o');
   title(hAx, 'Medium 1 Oscillating Temperature field');
   xlabel(hAx, '$x$-location', 'fontsize', 14, 'interpreter', 'latex')
   ylabel(hAx, '$|T_f|$', 'fontsize', 14, 'interpreter', 'latex')
   movegui(hF, 'south');
   
   [hF, hAx] = getAx();
-  plotFunc(hAx, resObj.N_layers, resObj.q(1, :), L0, resObj.Posx, resObj.cumLo);
-  plot(hAx, resObj.cumLo(2:resObj.N_layers)-(max(cumsum(L0)) / 2), abs(resObj.qM(1, 2:resObj.N_layers)), 'o');
+  plotFunc(hAx, nLayers, resObj.q(1, :), L0, resObj.Posx, resObj.cumLo);
+  plot(hAx, resObj.cumLo(2:nLayers)-(max(cumsum(L0)) / 2), abs(resObj.qM(1, 2:nLayers)), 'o');
   title(hAx, 'Medium 1 Oscillating Heat flux field');
   xlabel(hAx, '$x$-location', 'fontsize', 14, 'interpreter', 'latex')
   ylabel(hAx, '$|q_f|$', 'fontsize', 14, 'interpreter', 'latex')
   movegui(hF, 'north');
   
   [hF, hAx] = getAx();
-  plotFunc(hAx, resObj.N_layers, resObj.v(1, :), L0, resObj.Posx, resObj.cumLo);
-  plot(hAx, resObj.cumLo(2:resObj.N_layers)-(max(cumsum(L0)) / 2), abs(resObj.vM(1, 2:resObj.N_layers)), 'o');
+  plotFunc(hAx, nLayers, resObj.v(1, :), L0, resObj.Posx, resObj.cumLo);
+  plot(hAx, resObj.cumLo(2:nLayers)-(max(cumsum(L0)) / 2), abs(resObj.vM(1, 2:nLayers)), 'o');
   title(hAx, 'Oscillating Velocity field');
   xlabel(hAx, '$x$-location', 'fontsize', 14, 'interpreter', 'latex')
   ylabel(hAx, '$|v|$', 'fontsize', 14, 'interpreter', 'latex')
   movegui(hF, 'southeast');
   
   [hF, hAx] = getAx();
-  plotFunc(hAx, resObj.N_layers, resObj.p(1, :), L0, resObj.Posx, resObj.cumLo);
-  plot(hAx, resObj.cumLo(2:resObj.N_layers)-(max(cumsum(L0)) / 2), abs(resObj.pM(1, 2:resObj.N_layers)), 'o');
+  plotFunc(hAx, nLayers, resObj.p(1, :), L0, resObj.Posx, resObj.cumLo);
+  plot(hAx, resObj.cumLo(2:nLayers)-(max(cumsum(L0)) / 2), abs(resObj.pM(1, 2:nLayers)), 'o');
   title(hAx, 'Oscillating Pressure field');
   xlabel(hAx, '$x$-location', 'fontsize', 14, 'interpreter', 'latex')
   ylabel(hAx, '$|p|$', 'fontsize', 14, 'interpreter', 'latex')
   movegui(hF, 'northeast');
   
   [hF, hAx] = getAx();
-  plotFunc(hAx, resObj.N_layers, resObj.T_m(1, :), L0, resObj.Posx, resObj.cumLo);
-  plot(hAx, resObj.cumLo(2:resObj.N_layers)-(max(cumsum(L0)) / 2), abs(resObj.T_Mm(1, 2:resObj.N_layers)), 'o');
+  plotFunc(hAx, nLayers, resObj.T_m(1, :), L0, resObj.Posx, resObj.cumLo);
+  plot(hAx, resObj.cumLo(2:nLayers)-(max(cumsum(L0)) / 2), abs(resObj.T_Mm(1, 2:nLayers)), 'o');
   title(hAx, 'Mean temperature distribution');
   xlabel(hAx, '$x$-location', 'fontsize', 14, 'interpreter', 'latex')
   ylabel(hAx, '$T_{MEAN}$', 'fontsize', 14, 'interpreter', 'latex')
@@ -144,8 +145,8 @@ end
 
 end
 
-function plotFunc(hAx, N_layers, G, L0, Posx, cumLo)
-  for k = 2:1:(N_layers)
+function plotFunc(hAx, nLayers, G, L0, Posx, cumLo)
+  for k = 2:1:(nLayers)
     plot(hAx, [cumLo(k), cumLo(k)]-(max(cumsum(L0)) / 2), [min(abs(G)), max(abs(G))], '-r')
   end
   plot(hAx, Posx-(max(cumsum(L0)) / 2), abs(G))

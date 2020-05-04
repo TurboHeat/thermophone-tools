@@ -180,7 +180,7 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
       % This function initializes some layer parameters based on the simulation options
       arguments
         layers(:,1) LayerModels.Layer
-        opts(1,1) thermophoneSimOpts
+        opts(1,1) ThermophoneSimOpts
       end
       
       area = opts.Ly * opts.Lz;
@@ -202,6 +202,12 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
         end
       end
       
+    end
+    
+    function ct = getCumulativeThickness(layers)
+      L0 = vertcat(layers.L);
+      % (Semi-)infinite layers are excluded from the summation
+      ct = cumsum( L0 .* isfinite(L0), 'omitnan');
     end
   end
   %% Custom display methods

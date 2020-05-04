@@ -1,11 +1,11 @@
-function [BCI, Hamat, w1_c, w2_c, Smat, Hbmat, SCALE] = systemSolver(Omega, MDM, N_layers, cumLo)
+function [BCI, Hamat, w1_c, w2_c, Smat, Hbmat, SCALE] = systemSolver(Omega, MDM, nLayers, cumLo)
 % Preallocation
-[w1_c, w2_c] = deal(mp(complex(zeros(N_layers, 1))));
-Hamat = mp(complex(ones(4,4,N_layers)));
-[Hbmat, invHbmat] = deal(mp(complex(zeros(4,4,N_layers))));
-Smat = mp(complex(zeros(4,N_layers)));
+[w1_c, w2_c] = deal(mp(complex(zeros(nLayers, 1))));
+Hamat = mp(complex(ones(4,4,nLayers)));
+[Hbmat, invHbmat] = deal(mp(complex(zeros(4,4,nLayers))));
+Smat = mp(complex(zeros(4,nLayers)));
 
-for k = 1:N_layers
+for k = 1:nLayers
   
   % Spatial scaling parameter (improves the precision of the code by reducing the
   % size of the exponential terms
@@ -69,7 +69,7 @@ for k = 1:N_layers
 end
 
 %% Calculation of the constants via the boundary conditions
-[BCI] = Backend.boundaryConds(double(MDM), Hamat, Smat, N_layers, cumLo, Hbmat, invHbmat, SCALE);
+[BCI] = Backend.boundaryConds(double(MDM), Hamat, Smat, nLayers, cumLo, Hbmat, invHbmat, SCALE);
 
 %Conversion of pertinent parameters to double for the following stages of calculation
 BCI = double(BCI);

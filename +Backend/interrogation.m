@@ -1,12 +1,12 @@
-function [field] = interrogation(Hamat, Hbmat, Smat, cumLo, que, N_layers, BCI, T_mean, SCALE)
+function [field] = interrogation(Hamat, Hbmat, Smat, cumLo, que, nLayers, BCI, T_mean, SCALE)
 if floor(que) == que
   
   %% ==================================================================== %%
   
   %% Identifying the layer containing of the x-interrogation point
-  [interval, posx] = Backend.findInterval(cumLo, cumLo(que), N_layers);
+  [interval, posx] = Backend.findInterval(cumLo, cumLo(que), nLayers);
 else
-  [interval, posx] = Backend.findInterval(cumLo, que, N_layers);
+  [interval, posx] = Backend.findInterval(cumLo, que, nLayers);
 end
 
 %% ==================================================================== %%
@@ -16,7 +16,7 @@ field = Hamat(:,:,interval) * (diag(diag((double(Hbmat(:,:,interval).^(posx / SC
   Smat(:,interval);
 
 %% ==================================================================== %%
-if (interval == 1 || interval == N_layers)
+if (interval == 1 || interval == nLayers)
   field(5, :) = T_mean{interval};
 else
   field(5, :) = feval(T_mean{interval}, posx);
