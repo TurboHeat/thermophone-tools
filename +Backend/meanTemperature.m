@@ -1,4 +1,4 @@
-function [T, q] = meanTemperature(MDM, N_layers, cumLo, dimensions)
+function [mean_c] = meanTemperature(MDM, N_layers, cumLo, dimensions)
 
 %% Initialising variables
 dK = zeros(1, N_layers-2);
@@ -113,22 +113,5 @@ end
 
 %This is a check to make sure the algorithm is correct
 %mean_c(N_layers - 2, 2)=(Ro+(Qo*Uo)+(Po*Uo*mean_c(1, 1))); %this line is to check it is correct
-
-%% Building the temperature and heat-flux functions
-
-syms x
-
-for k = 2:N_layers - 1
-    % Temperature solution with solved coefficients prepared into matlab function for future use
-    T{k} = matlabFunction((mean_c(k - 1, 1)*(x)+mean_c(k - 1, 2)-((MDM(k, 11)) * (x)^2)/(2 * MDM(k, 9)))+MDM(1, 14));
-    % Heat-Flux solution with solved coefficients prepared into matlab function for future use
-    q{k} = matlabFunction(-MDM(k, 9)*(mean_c(k - 1, 1))+(MDM(k, 11) * (x)));
-end
-
-% Temperature and heat-flux solution in extremity layers
-T{1} = mean_c(1, 2) + MDM(1, 14);
-q{1} = -MDM(1, 9) * mean_c(1, 1);
-T{N_layers} = mean_c(end, 1) * cumLo(end-1) + mean_c(end, 2) - ((MDM(end-1, 11)) * (cumLo(end-1))^2) / (2 * MDM(end -1, 9)) + MDM(1, 14);
-q{N_layers} = -MDM(end-1, 9) * mean_c(end, 1);
 
 end

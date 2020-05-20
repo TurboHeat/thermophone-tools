@@ -16,9 +16,14 @@ field = Hamat(:,:,interval) * (diag(diag((double(Hbmat(:,:,interval).^(posx / SC
   Smat(:,interval);
 
 %% ==================================================================== %%
-if (interval == 1 || interval == nLayers)
-  field(5, :) = T_mean{interval};
+if interval == 1 
+  field(5, :) = mBCI(1, 2) + MDM(1, 14);
+elseif interval == N_layers
+  field(5, :) = mBCI(end, 1) * cumLo(end-1) + mBCI(end, 2) - ...
+      ((MDM(end-1, 11)) * (cumLo(end-1))^2) / (2 * MDM(end -1, 9)) + ...
+      MDM(1, 14);
 else
-  field(5, :) = feval(T_mean{interval}, posx);
+  field(5, :) =  (mBCI(interval - 1, 1)*(posx)+mBCI(interval - 1, 2)...
+      -((MDM(interval, 11)) * (posx)^2)/(2 * MDM(interval, 9)))+MDM(1, 14);
 end
 end
