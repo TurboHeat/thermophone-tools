@@ -1,7 +1,5 @@
 function [T, q] = meanTemperature(MDM, N_layers, cumLo, dimensions)
 
-userSuppliedHeatTransferCoeff = false; %is h defined by the user? or do you want it overwritten
-
 %% Initialising variables
 dK = zeros(1, N_layers-2);
 dL = zeros(1, N_layers-1);
@@ -28,7 +26,7 @@ coefficients. If control_h is set to false, it estimates the radiation and
 the natural-convection heat transfer coefficient aswell.
 %}
 
-if userSuppliedHeatTransferCoeff %if h is defined by natural convection and is dictated by the code.
+if dimensions(15) %if h is defined by natural convection and is dictated by the code.
 
     syms Temp
 
