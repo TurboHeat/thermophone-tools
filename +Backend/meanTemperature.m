@@ -12,7 +12,7 @@ q = cell(1, 4);
 
 %% Black-body radiation
 SIGMA = 5.670373 * 10^-8; %Stephan-Boltzmann constant
-EPSILON = 1; 
+EPSILON = 1; %Emmisivity
 
 %% Sum of all input power per unit area
 G = sum(MDM(:, 10)+(MDM(:, 11) .* MDM(:, 1))+MDM(:, 12)); %sum of all input generation
