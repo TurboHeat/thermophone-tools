@@ -28,15 +28,6 @@ the natural-convection heat transfer coefficient aswell.
 
 if dimensions(15) %if h is defined by natural convection and is dictated by the code.
 
-    syms Temp
-
-    PB = 0.54 * (MDM(1, 7) * (dimensions(1)^3) * (dimensions(2)^3) * MDM(1, 4) * 9.81 * (MDM(1, 2)^2) / ((2 * (dimensions(1)) + 2 * (dimensions(2)))^3 * MDM(1, 5) * MDM(1, 9)))^(1 / 4) * MDM(1, 9) * (2 * dimensions(1) + 2 * dimensions(2)) / (dimensions(1) * dimensions(2));
-    T_est = double(vpasolve(SIGMA * EPSILON * (Temp^4 - MDM(1, 14)^4) + PB * ((Temp - MDM(1, 14))^(5 / 4)) - G / 2));
-    h1 = PB * ((T_est - MDM(1, 14))^(0.25));
-    h2 = h1;
-
-else %if h is defined by the user
-
     h1 = MDM(2, 13) + MDM(1, 15);
     h2 = MDM(end, 13) + MDM(end-1, 15);
 
@@ -44,7 +35,16 @@ else %if h is defined by the user
     temp = (roots(p));
     temp = temp(imag(temp) == 0);
     T_est = temp(temp > 0);
+    
+else %if h is defined by the user
 
+    syms Temp
+
+    PB = 0.54 * (MDM(1, 7) * (dimensions(1)^3) * (dimensions(2)^3) * MDM(1, 4) * 9.81 * (MDM(1, 2)^2) / ((2 * (dimensions(1)) + 2 * (dimensions(2)))^3 * MDM(1, 5) * MDM(1, 9)))^(1 / 4) * MDM(1, 9) * (2 * dimensions(1) + 2 * dimensions(2)) / (dimensions(1) * dimensions(2));
+    T_est = double(vpasolve(SIGMA * EPSILON * (Temp^4 - MDM(1, 14)^4) + PB * ((Temp - MDM(1, 14))^(5 / 4)) - G / 2));
+    h1 = PB * ((T_est - MDM(1, 14))^(0.25));
+    h2 = h1;
+    
 end
 
 %% Spatial Temperature solution
