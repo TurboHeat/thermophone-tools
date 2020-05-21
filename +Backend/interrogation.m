@@ -1,4 +1,4 @@
-function [field] = interrogation(Hamat, Hbmat, Smat, cumLo, que, nLayers, BCI, T_mean, SCALE)
+function [field] = interrogation(Hamat, Hbmat, Smat, cumLo, que, nLayers, BCI, mBCI, SCALE, MDM)
 if floor(que) == que
   
   %% ==================================================================== %%
