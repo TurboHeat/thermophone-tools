@@ -26,7 +26,7 @@ coefficients. If control_h is set to false, it estimates the radiation and
 the natural-convection heat transfer coefficient aswell.
 %}
 
-if dimensions(15) %if h is defined by natural convection and is dictated by the code.
+if dimensions(15) %if h is defined by the user
 
     h1 = MDM(2, 13) + MDM(1, 15);
     h2 = MDM(end, 13) + MDM(end-1, 15);
@@ -36,7 +36,18 @@ if dimensions(15) %if h is defined by natural convection and is dictated by the 
     temp = temp(imag(temp) == 0);
     T_est = temp(temp > 0);
     
-else %if h is defined by the user
+%{
+If the heat transfer coefficient is unphysically large,
+it is possible that there are only negative solutions but we still want the
+code to run so we will select the smallest of the negative solutions and
+display a warning
+%}
+    if isempty(T_est)
+        T_est = min(abs(real(temp)));
+        disp('Warning: Check that the heat transfer coefficients are realistic');
+    end
+    
+else %if h is defined by natural convection and is dictated by the code.
 
     syms Temp
 
@@ -63,7 +74,7 @@ Uo = -(MDM(end -1, 9) + ((h2) * cumLo(end-1))) / (h2);
 ProddK(1) = 1;
 Mo = cumLo(2);
 
-if N_layers > 2
+if N_layers > 3
     for k = 2:N_layers - 2
 
         dK(k) = MDM(k, 9) / MDM(k+1, 9);
