@@ -14,7 +14,7 @@ cumLo = layers.getCumulativeThickness();
 cumLo = [cumLo(1); cumLo]; % fix for indexing in the boundary conditions calculation later
 
 %% Steady-State mean temperature calculation
-[T_mean, ~] = Backend.meanTemperature(double(MDM), double(nLayers), double(cumLo));
+[mBCI] = Backend.meanTemperature(double(MDM), double(nLayers), double(cumLo), double(dimensions));
 
 %% ==================================================================== %%
 
@@ -73,7 +73,7 @@ parfor k = 1:maxO
     % of the result, this loop can be removed.
     for que = 1:Nq % x-position loop
       % Applying the solution to a specific x-location (not vital)
-      field = Backend.interrogation(Hamat, Hbmat, Smat, cumLo, Posx(que), nLayers, BCI, T_mean, SCALE);
+      field = Backend.interrogation(Hamat, Hbmat, Smat, cumLo, Posx(que), nLayers, BCI, mBCI, SCALE, MDM);
       p(k, que)   = field(1, :);
       v(k, que)   = field(2, :);
       q(k, que)   = field(3, :);
@@ -83,7 +83,7 @@ parfor k = 1:maxO
 
     for que = 2:nLayers % x-position loop
       % Finding the solution at the boundary interfaces (not vital)
-      field = Backend.interrogation(Hamat, Hbmat, Smat, cumLo, que, nLayers, BCI, T_mean, SCALE);
+      field = Backend.interrogation(Hamat, Hbmat, Smat, cumLo, que, nLayers, BCI, mBCI, SCALE, MDM);
       lpM(que)   = field(1, :);
       lvM(que)   = field(2, :);
       lqM(que)   = field(3, :);
@@ -100,7 +100,7 @@ parfor k = 1:maxO
   % boundaries
   
   field = Backend.interrogation(Hamat, Hbmat, Smat, cumLo, ...
-    cumLo(1)-(2 * (kTop / (2 * CpTop * Omega(k) * rhoTop))^(1 / 2)), nLayers, BCI, T_mean, SCALE);
+    cumLo(1)-(2 * (kTop / (2 * CpTop * Omega(k) * rhoTop))^(1 / 2)), nLayers, BCI, mBCI, SCALE, MDM);
   lpM(1) = field(1, :);
   lvM(1) = field(2, :);
   lqM(1) = field(3, :);
@@ -108,7 +108,7 @@ parfor k = 1:maxO
   lT_Mm(1) = field(5, :);
   
   field = Backend.interrogation(Hamat, Hbmat, Smat, cumLo, ...
-    cumLo(end)+(2 * (kTop / (2 * CpTop * Omega(k) * rhoTop))^(1 / 2)), nLayers, BCI, T_mean, SCALE);
+    cumLo(end)+(2 * (kTop / (2 * CpTop * Omega(k) * rhoTop))^(1 / 2)), nLayers, BCI, mBCI, SCALE, MDM);
   lpM(nLayers+1) = field(1, :);
   lvM(nLayers+1) = field(2, :);
   lqM(nLayers+1) = field(3, :);

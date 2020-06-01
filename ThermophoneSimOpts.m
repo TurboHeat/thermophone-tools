@@ -19,6 +19,7 @@ classdef ThermophoneSimOpts
     %% Switches / flags
     xres(1,1) logical = true; % switch for calculating spatial information (only really needed for in-depth analysis)
     optim(1,1) logical = false; % are you performing an optimization analysis?
+    userSuppliedHeatTransferCoeff(1,1) logical = false; %is h defined by the user? or do you want it overwritten
     %% Initial Ambient temperature
     T_amb(1,1) double {mustBeNonnegative, mustBeFinite} = 3 * 10^2; % [K]
     %% Location of Thermophone layer (used in the efficiency calculation)
@@ -45,7 +46,7 @@ classdef ThermophoneSimOpts
       mustBeScalarOrEmpty(obj);
       out = [obj.Ly, obj.Lz, obj.x_int, obj.y_int, obj.z_int, obj.OmegaF, ...
              obj.OmegaL, double(obj.N_Omega), obj.maxX, double(obj.N_x), obj.T_amb,...
-             double(obj.TH_layer_number), obj.xres, obj.optim];
+             double(obj.TH_layer_number), obj.xres, obj.optim, obj.userSuppliedHeatTransferCoeff];
     end
   end
   
