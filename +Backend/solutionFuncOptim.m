@@ -64,6 +64,17 @@ parfor k = 1:maxO
   [BCI, Hamat, w1_c, ~, Smat, Hbmat, SCALE] = Backend.systemSolver(Omegamp(k), MDMmp, nLayers, cumLomp);
   %% ==================================================================== %%
   
+    for que = simConfigMat(12):simConfigMat(12)+1 % x-position loop
+      % Finding the solution at the boundary interfaces either side of the
+      % thermophone layer
+      field = Backend.interrogationOptim(Hamat, Hbmat, Smat, cumLo, que, nLayers, BCI, SCALE);
+      lpM(que)   = field(1, :);
+      lvM(que)   = field(2, :);
+      lqM(que)   = field(3, :);
+      lTM(que)   = field(4, :);
+      lT_Mm(que) = field(5, :);
+    end
+  
   %% At the maximum velocity position in the first and last layers (thermal thickness)
   % These are needed to determine the propagation from the front and back
   % boundaries
