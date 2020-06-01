@@ -12,7 +12,7 @@ q = cell(1, 4);
 
 %% Black-body radiation
 SIGMA = 5.670373 * 10^-8; %Stephan-Boltzmann constant
-EPSILON = 1; %Emmisivity
+EPSILON = 1; %Emissivity
 
 %% Sum of all input power per unit area
 G = sum(MDM(:, 10)+(MDM(:, 11) .* MDM(:, 1))+MDM(:, 12)); %sum of all input generation
@@ -44,7 +44,7 @@ display a warning
 %}
     if isempty(T_est)
         T_est = min(abs(real(temp)));
-        disp('Warning: Check that the heat transfer coefficients are realistic');
+        warning('Check that the heat transfer coefficients are realistic');
     end
     
 else %if h is defined by natural convection and is dictated by the code.
