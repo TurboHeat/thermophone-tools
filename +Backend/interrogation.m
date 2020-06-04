@@ -18,7 +18,7 @@ field = Hamat(:,:,interval) * (diag(diag((double(Hbmat(:,:,interval).^(posx / SC
 %% ==================================================================== %%
 if interval == 1 
   field(5, :) = mBCI(1, 2) + MDM(1, 14);
-elseif interval == N_layers
+elseif interval == nLayers
   field(5, :) = mBCI(end, 1) * cumLo(end-1) + mBCI(end, 2) - ...
       ((MDM(end-1, 11)) * (cumLo(end-1))^2) / (2 * MDM(end -1, 9)) + ...
       MDM(1, 14);
