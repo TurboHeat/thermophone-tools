@@ -23,15 +23,15 @@ end
 function [results] = thermophoneExperimentExample()
 
 %% Configure simulation options:
-simOpts = ThermophoneSimOpts(); % options object with default settings, details can be changed later
-simOpts.N_Omega = 1; % Example of "changing it later"
+expOpts = ThermophoneModels.ComputationOptions(); % options object with default settings, details can be changed later
+expOpts.N_Omega = 1; % Example of "changing it later"
 % simOpts.optim = 0; % Example of "changing it later"
 [configs] = verificationCase_exp();
 
 %% Run the solver
 nConf = numel(configs);
 results(nConf, 1) = ThermophoneEXPResults();
-tmp = simOpts.toMatrix(); % temporary hack
+tmp = expOpts.toMatrix(); % temporary hack
 
 %intut the text file name here with the 'zero' index position
 snippet = 'Air_3400_06_05_20_0';
@@ -41,7 +41,7 @@ expfilenames{2} = ['Gamma_exp_Data_', snippet];
 
 for indC = 1:nConf
     % Here we usually solve for 1 frequency
-    applySimOptions(configs{indC}, simOpts);
+    applyCompOptions(configs{indC}, expOpts);
     results(indC) = Backend.solutionFuncEXP(configs{indC}, tmp, expfilenames);
 end
 

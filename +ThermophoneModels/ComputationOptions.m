@@ -1,5 +1,5 @@
-classdef ThermophoneSimOpts
-  % THERMOPHONESIMOPTS Simple data class for holding simulation settings
+classdef ComputationOptions
+  % ComputationOptions Simple data class for holding the computation settings
   
   properties (Access = public)
     %% Thermophone dimensions
@@ -28,9 +28,9 @@ classdef ThermophoneSimOpts
   
   methods (Access = public)
 
-    function optsObj = ThermophoneSimOpts(optsKW)
+    function optsObj = ComputationOptions(optsKW)
       arguments
-        optsKW.?ThermophoneSimOpts
+        optsKW.?ThermophoneModels.ComputationOptions
       end
       
       % Copy field contents into object properties

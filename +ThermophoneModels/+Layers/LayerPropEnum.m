@@ -1,5 +1,5 @@
 classdef LayerPropEnum < uint8
-  % LayerPropEnum is a mapping between the properties of LayerModels.Layer and their numeric positions
+  % LayerPropEnum is a mapping between the properties of ThermophoneModels.Layers.Layer and their numeric positions
   % This was created as an intermediate refactoring stage
   
   enumeration

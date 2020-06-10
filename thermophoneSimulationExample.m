@@ -21,7 +21,7 @@ end
 %}
 function [results] = thermophoneSimulationExample()
 %% Configure simulation options:
-simOpts = ThermophoneSimOpts(); % options object with default settings, details can be changed later
+simOpts = ThermophoneModels.ComputationOptions(); % options object with default settings, details can be changed later
 simOpts.N_Omega = 1; % Example of "changing it later"
 % simOpts.optim = 0; % Example of "changing it later"
 [configs] = verificationCases();
@@ -33,13 +33,13 @@ tmp = simOpts.toMatrix(); % temporary hack
 if simOpts.optim  
   parfor indC = 1:nConf
     % Here we usually solve for 1 frequency
-    applySimOptions(configs{indC}, simOpts);
+    applyCompOptions(configs{indC}, simOpts);
     results(indC) = Backend.solutionFuncOptim(configs{indC}, tmp);
   end
 else
   for indC = 1:nConf
     % Here we usually solve for many frequencies, internal parfor will kick in
-    applySimOptions(configs{indC}, simOpts);
+    applyCompOptions(configs{indC}, simOpts);
     results(indC) = Backend.solutionFunc(configs{indC}, tmp);
   end  
 end
