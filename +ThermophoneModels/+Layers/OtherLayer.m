@@ -1,4 +1,4 @@
-classdef OtherLayer < LayerModels.Layer
+classdef OtherLayer < ThermophoneModels.Layers.Layer
   %OTHERLAYER A layer that doesn't fit in other categories (for e.g. a glue/bonding
   %layer that joins smooth and rough surfaces together).
 
@@ -11,12 +11,12 @@ classdef OtherLayer < LayerModels.Layer
     %% Constructor
     function layerObj = OtherLayer(props)
       arguments
-        props.?LayerModels.OtherLayer
+        props.?ThermophoneModels.Layers.OtherLayer
       end
       
       % Create superclass:
       propsKV = namedargs2cell(props);
-      layerObj = layerObj@LayerModels.Layer(propsKV{:});
+      layerObj = layerObj@ThermophoneModels.Layers.Layer(propsKV{:});
       
       % Custom modifications:
       

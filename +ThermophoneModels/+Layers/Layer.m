@@ -48,7 +48,7 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
       % A protected/private constructor means this class cannot be instantiated
       % externally, but only through a subclass.
       arguments
-        props.?LayerModels.Layer
+        props.?ThermophoneModels.Layers.Layer
       end
       
       %% Special initialization:
@@ -70,63 +70,63 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
   methods
     
     function set.L(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end 
     
     function set.rho(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.B(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.alpha(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.mu(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.lambda(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.Cp(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.Cv(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.k(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.sL(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
         
     function set.s0(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
             
     function set.sR(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
             
     function set.hL(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
             
     function set.T0(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
             
     function set.hR(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
     
   end % no-attribute methods
@@ -134,9 +134,9 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
   %% Pseudo-protected implementation
   methods (Access = protected, Static = true)
     function name = protectedSet(callstack)
-      name = LayerModels.Layer.propnameFromCallstack(callstack);
-      if ~(LayerModels.Layer.getCallerMetaclass(callstack(2:end)) <= ?LayerModels.Layer)
-        LayerModels.Layer.throwUnprotectedAccess(name);
+      name = ThermophoneModels.Layers.Layer.propnameFromCallstack(callstack);
+      if ~(ThermophoneModels.Layers.Layer.getCallerMetaclass(callstack(2:end)) <= ?ThermophoneModels.Layers.Layer)
+        ThermophoneModels.Layers.Layer.throwUnprotectedAccess(name);
       end
     end
     
@@ -179,7 +179,7 @@ classdef Layer < handle & matlab.mixin.Heterogeneous & matlab.mixin.CustomDispla
     function applySimOptions(layers, opts)
       % This function initializes some layer parameters based on the simulation options
       arguments
-        layers(:,1) LayerModels.Layer
+        layers(:,1) ThermophoneModels.Layers.Layer
         opts(1,1) ThermophoneSimOpts
       end
       

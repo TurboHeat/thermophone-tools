@@ -1,4 +1,4 @@
-classdef InsulationLayer < LayerModels.Layer
+classdef InsulationLayer < ThermophoneModels.Layers.Layer
   %INSULATIONLAYER A layer whose sole purpose is to provide electrical insulation
   %between a thermophone layer and another layer.
 
@@ -11,12 +11,12 @@ classdef InsulationLayer < LayerModels.Layer
     %% Constructor
     function layerObj = InsulationLayer(props)
       arguments
-        props.?LayerModels.InsulationLayer
+        props.?ThermophoneModels.Layers.InsulationLayer
       end
       
       % Create superclass:
       propsKV = namedargs2cell(props);
-      layerObj = layerObj@LayerModels.Layer(propsKV{:});
+      layerObj = layerObj@ThermophoneModels.Layers.Layer(propsKV{:});
       
       % Custom modifications:
       

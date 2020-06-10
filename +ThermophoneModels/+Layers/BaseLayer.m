@@ -1,4 +1,4 @@
-classdef BaseLayer < LayerModels.Layer
+classdef BaseLayer < ThermophoneModels.Layers.Layer
   %BASELAYER A solid layer that is situated at the very bottom of a thermophone,
   %stack and is therefore modelled as a semi-infinite layer.
   
@@ -11,12 +11,12 @@ classdef BaseLayer < LayerModels.Layer
     %% Constructor
     function layerObj = BaseLayer(props)
       arguments
-        props.?LayerModels.BaseLayer
+        props.?ThermophoneModels.Layers.BaseLayer
       end
       
       % Create superclass:
       propsKV = namedargs2cell(props);
-      layerObj = layerObj@LayerModels.Layer(propsKV{:});
+      layerObj = layerObj@ThermophoneModels.Layers.Layer(propsKV{:});
       
       % Custom modifications:
       
