@@ -14,7 +14,7 @@ cumLo = layers.getCumulativeThickness();
 cumLo = [cumLo(1); cumLo]; % fix for indexing in the boundary conditions calculation later
 
 %% Steady-State mean temperature calculation
-[mBCI] = Backend.meanTemperature(double(MDM), double(nLayers), double(cumLo), double(dimensions));
+[mBCI] = Backend.meanTemperature(double(MDM), double(nLayers), double(cumLo), double(simConfigMat));
 
 %% ==================================================================== %%
 
