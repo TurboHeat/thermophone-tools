@@ -30,14 +30,14 @@ function [P_front, V_front, Q_front, T_front] = ...
     %if in far-field
     % RMS pressure to far-field pressure
     Mag_Pff_1 = Mag_Prms_EXP .* sqrt(2);
-    disp('the microphone is extimated to be in the far field')
+    disp('inverseRayleighFunc: The microphone is extimated to be in the far field.')
   else
     %the recorded SPL is actually near field
     %if in near field
     % Near field RMS pressure to far field pressure
     Ro1 = (Dimensions(1)) .* (Dimensions(2)) .* Omega ./ (4 * pi * sqrt(MDM(1, 3)*MDM(1, 7)/(MDM(1, 8) * MDM(1, 2))));
     Mag_Pff_1 = sqrt(2) * Ro1 .* Mag_Prms_EXP ./ (Dimensions(3) - x2);
-    disp('the microphone is estimated to be in the near field: consider moving the microphone further away.')
+    disp('inverseRayleighFunc: The microphone is estimated to be in the near field: consider moving the microphone further away.')
   end
   
   %% Factor in Rayleigh integral

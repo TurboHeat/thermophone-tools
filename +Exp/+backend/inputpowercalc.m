@@ -1,10 +1,9 @@
 function [ThermoPwr] = inputpowercalc(Va, Vb, Vc, Datapoints)
+% This code determines the input power to the Thermophone
 
-%% This code determines the input power to the Thermophone
-
-[Va_rms, Va_f] = Backend.Discrete_Fourier_transform(Va, Datapoints(1, 13:16));
-[Vb_rms, Vb_f] = Backend.Discrete_Fourier_transform(Vb, Datapoints(1, 13:16));
-[Vc_rms, Vc_f] = Backend.Discrete_Fourier_transform(Vc, Datapoints(1, 13:16));
+[Va_rms, Va_f] = Exp.backend.dft(Va, Datapoints(1, 13:16));
+[Vb_rms, Vb_f] = Exp.backend.dft(Vb, Datapoints(1, 13:16));
+[Vc_rms, Vc_f] = Exp.backend.dft(Vc, Datapoints(1, 13:16));
 
 suntR = Datapoints(1, 8); % Manual input shunt resistance
 ShuntVdrop = abs(Va_rms-Vb_rms); % Voltage drop over the shunt

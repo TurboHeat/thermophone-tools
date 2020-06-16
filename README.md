@@ -91,7 +91,7 @@ in the order in which they appear. The column inputs are as follows:
     ```
 
 1. **Running in `parfor` mode**  
-If `Backend.solutionFunc` is configured to run using `parfor`, it is necessary to initialize the `mp` toolbox on each node (i.e. worker of the parallel pool) using the following commands:
+If `solutionFunc` is configured to run using `parfor`, it is necessary to initialize the `mp` toolbox on each node (i.e. worker of the parallel pool) using the following commands:
 
     ```matlab
     gcp(); % Create a pool with the default settings (if needed)

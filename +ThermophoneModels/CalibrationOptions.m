@@ -41,7 +41,7 @@ classdef CalibrationOptions < handle
         coObj (1,1) ThermophoneModels.CalibrationOptions
         T_in_C (1,1) double {mustBeNonNan} = NaN
       end
-      coObj.Tcalib = (coObj.MF * T_in_C + coObj.OF) * coObj.S;
+      coObj.Tcal = (coObj.MF * T_in_C + coObj.OF) * coObj.S;
     end
     
     function [Tpile, P0, T0] = applyToData(coObj, Tpile, P0, T_in_C)
@@ -49,7 +49,7 @@ classdef CalibrationOptions < handle
       %% Input handling
       narginchk(3,4);
       if nargin == 4, coObj.setT_A(T_in_C); end
-      assert(~isnan(coObj.Tcalib), 'T_A must not be NaN!')  
+      assert(~isnan(coObj.Tcal), 'T_A must not be NaN!')  
       
       %% Computation
       Tpile = coObj.Tcal * Tpile; % Thermopile [V]
