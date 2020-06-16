@@ -9,8 +9,8 @@ cumLo = layers.getCumulativeThickness();
 cumLo = [cumLo(1); cumLo]; % fix for indexing in the boundary conditions calculation later
 
 %% ==================================================================== %%
-%Loading the experimental data
-[MIC, ACC, Va, Vb, Vc, Datapoints] = Backend.loadEXPdata(expfilenames);
+% Loading the experimental data
+[MIC, ACC, Va, Vb, Vc, datapoints] = Exp.backend.loadData(expfilenames);
 
 % Number of omega-interrogation points
 Omega = 2 * pi * Datapoints(1, 15);
