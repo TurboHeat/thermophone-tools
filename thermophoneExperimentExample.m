@@ -38,7 +38,8 @@ snippet = 'Air_3400_06_05_20_0'; % TODO: INPUT!!!
 expfilenames{1} = fullfile(pwd, ['Temp_Gamma_exp_Data_', snippet]);
 expfilenames{2} = fullfile(pwd, ['Gamma_exp_Data_', snippet]);
 
-co = ThermophoneModels.CalibrationOptions('Mic', 3.41, 'Acc', 10.2, 'Scalib', 1.36E-6, 'P', 0.16E5);
+co = ThermophoneModels.CalibrationOptions('Mic', 3.41, 'Acc', 10.2, 'S', 1.36E-6, ...
+                                          'P', 0.16E5, 'MF', 0.00334, 'OF', 0.917);
 
 %% Download the data files if they don't exist:
 % THESE SHOULD NOT BE STORED ON GITHUB!
