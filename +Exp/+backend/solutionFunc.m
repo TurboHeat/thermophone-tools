@@ -123,7 +123,7 @@ ETA1 = [eta_TP_1, eta_Therm, eta_aco_1, ones(size(eta_aco_1)) .* eta_Conv_1, eta
 %heat-flux, pressure and temperature oscillations. Velocity measure is at
 %Lth location.
 [~, V_front, Q_front, ~] = ...
-    Backend.inverserayleighFunc(Ny, Nz, simConfigMat, MDM, kay1, kay2, Mag_Prms_EXP, cumLo, 1, Omega, Hamat, Hbmat, SCALE, BCI, vM);
+    Exp.backend.inverseRayleighFunc(Ny, Nz, simConfigMat, MDM, kay1, kay2, Mag_Prms_EXP, cumLo, 1, Omega, Hamat, Hbmat, SCALE, BCI, vM);
 
 % Calculating vibroacoustic energy input
 [W_front, V_rms, Jth, Jv, Ratio_pred] = Backend.vibroFunc(P0, T0, simConfigMat, MDM, Mag_ACCrms_EXP, 2*pi*acc_freq, V_front);

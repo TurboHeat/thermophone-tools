@@ -1,5 +1,5 @@
 function [P_front, V_front, Q_front, T_front] = ...
-  inverserayleighFunc(Ny, Nz, Dimensions, MDM, kay1, kay2, Mag_Prms_EXP, cumLo, maxO, Omega, Hamat, Hbmat, SCALE, BCIverify, vM)
+  inverseRayleighFunc(Ny, Nz, Dimensions, MDM, kay1, kay2, Mag_Prms_EXP, cumLo, maxO, Omega, Hamat, Hbmat, SCALE, BCIverify, vM)
 %{
  ====================================================================
  - Inverse application of Rayleigh's second integral
@@ -21,7 +21,7 @@ function [P_front, V_front, Q_front, T_front] = ...
   
   %% Where is the microphone WRT thermophone? near field or far-field?
   
-  %Near field distance calculation
+  %Near-field distance calculation
   Co = sqrt(MDM(1, 3)*MDM(1, 7)/(MDM(1, 8) * MDM(1, 2))); %speed of sound
   Dia = sqrt(2*(Dimensions(1)^2)); %effective transducer diameter
   xff = Dia^2 / (8 * pi * Co / Omega);
@@ -108,8 +108,8 @@ function [P_front, V_front, Q_front, T_front] = ...
   BCI = double([0; vB1 + 1i * vB2; 0; vD1 + 1i * vD2]);
   Resmat = HmatB * BCI;
   
-  ResmatCHeck = vpa([HmatB * BCI, HmatB * BCIverify(:, 1)]); %We see that there is very good agreement!
-  BCICHeck = ([BCI, BCIverify(:, 1)]); %We see that there is very good agreement.
+  ResmatCheck = vpa([HmatB * BCI, HmatB * BCIverify(:, 1)]); %We see that there is very good agreement!
+  BCICheck = ([BCI, BCIverify(:, 1)]); %We see that there is very good agreement.
   % However, it depends on the angle between the real and complex parts of the heat-flux.
   % The simulation case allows for an estimate for the correct phase angle. The error is the
   % largest on the temperature, since this one is the smallest number.
