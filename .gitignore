@@ -32,3 +32,6 @@ codegen/
 
 # Octave session info
 octave-workspace
+
+# Binary MAT files (not allowed on VCS by Iliya!)
+*.mat
