@@ -58,6 +58,14 @@ classdef CalibrationOptions < handle
       T0 = T_in_C + 273.15; % Temperature [°C]->[K]
     end
     
+    function [calibdMic] = applyToMic(coObj, uncalibdMic)
+      calibdMic = uncalibdMic ./ coObj.Mic;
+    end
+    
+    function [calibdAcc] = applyToAcc(coObj, uncalibdAcc)
+      calibdAcc = uncalibdAcc ./ coObj.Acc;
+    end
+      
   end
   
 end
