@@ -69,7 +69,7 @@ for k = 1:nLayers
 end
 
 %% Calculation of the constants via the boundary conditions
-[BCI] = Backend.boundaryConds(double(MDM), Hamat, Smat, nLayers, cumLo, Hbmat, invHbmat, SCALE);
+[BCI] = Lib.boundaryConds(double(MDM), Hamat, Smat, nLayers, cumLo, Hbmat, invHbmat, SCALE);
 
 %Conversion of pertinent parameters to double for the following stages of calculation
 BCI = double(BCI);

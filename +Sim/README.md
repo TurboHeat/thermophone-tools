@@ -82,7 +82,7 @@ in the order in which they appear. The column inputs are as follows:
     |   15   |  _h<sub>R</sub>_ | Rt. edge heat transfer coeff. |  [W m⁻¹ K⁻²]   |
 
 1. **Running in `parfor` mode**  
-If `Backend.solutionFunc` is configured to run using `parfor`, it is necessary to initialize the `mp` toolbox on each node (i.e. worker of the parallel pool) using the following commands:
+If `Sim.backend.solutionFunc` is configured to run using `parfor`, it is necessary to initialize the `mp` toolbox on each node (i.e. worker of the parallel pool) using the following commands:
 
     ```matlab
     gcp(); % Create a pool with the default settings (if needed)

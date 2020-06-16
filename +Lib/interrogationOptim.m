@@ -4,9 +4,9 @@ if floor(que) == que
     %% ==================================================================== %%
 
     %% Identifying the layer containing of the x-interrogation point
-    [interval, posx] = Backend.findInterval(cumLo, cumLo(que), nLayers);
+    [interval, posx] = Lib.findInterval(cumLo, cumLo(que), nLayers);
 else
-    [interval, posx] = Backend.findInterval(cumLo, que, nLayers);
+    [interval, posx] = Lib.findInterval(cumLo, que, nLayers);
 end
 
 %% ==================================================================== %%

@@ -190,26 +190,25 @@ classdef SimulationResults < ThermophoneModels.Results
       end
       
     end
-    
-    function plotFunc(hAx, nLayers, G, L0, Posx, cumLo)
-      for k = 2:1:(nLayers)
-        plot(hAx, [cumLo(k), cumLo(k)]-(max(cumsum(L0)) / 2), [min(abs(G)), max(abs(G))], '-r')
-      end
-      plot(hAx, Posx-(max(cumsum(L0)) / 2), abs(G))
-      grid(hAx, 'on')
-    end
-    
-    function [hF, hA] = getAx(figNo)
-      if ~nargin
-        hF = figure();
-      else
-        hF = figure(figNo);
-      end
-      hA = axes(hF);
-      hold(hA, 'on');
-    end
+   
   end
   
 end
 
+function plotFunc(hAx, nLayers, G, L0, Posx, cumLo)
+  for k = 2:1:(nLayers)
+    plot(hAx, [cumLo(k), cumLo(k)]-(max(cumsum(L0)) / 2), [min(abs(G)), max(abs(G))], '-r')
+  end
+  plot(hAx, Posx-(max(cumsum(L0)) / 2), abs(G))
+  grid(hAx, 'on')
+end
+
+function [hF, hA] = getAx(figNo)
+  if ~nargin
+    hF = figure();
+  else
+    hF = figure(figNo);
+  end
+  hA = axes(hF);
+  hold(hA, 'on');
 end
