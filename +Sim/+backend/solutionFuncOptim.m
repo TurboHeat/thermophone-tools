@@ -6,8 +6,8 @@ MDM = layers.toMatrix();
 %% Constants
 TOP = 1; % This represents the top or "first" layer.
 BOT = nLayers; % This represents the bottom, or "last" layer.
-% Dirty hack so we could use a shorter name ("LP") instead of "LayerModels.LayerPropEnum":
-LP = enumeration('LayerModels.LayerPropEnum'); LP = [cellstr(LP), num2cell(LP)].'; LP = struct(LP{:});
+% Dirty hack so we could use a shorter name ("LP") instead of "ThermophoneModels.Layers.LayerPropEnum":
+LP = enumeration('ThermophoneModels.Layers.LayerPropEnum'); LP = [cellstr(LP), num2cell(LP)].'; LP = struct(LP{:});
 
 %% Cumulative thickness
 cumLo = layers.getCumulativeThickness();
@@ -61,13 +61,13 @@ parfor k = 1:maxO
   [lpM, lTM, lvM, lqM, lT_Mm] = deal(complex(zeros(1, nLayers+1)));
   
   % Function that solves the boundary conditions dan finds the matrix of constants (solutions) for each layer
-  [BCI, Hamat, w1_c, ~, Smat, Hbmat, SCALE] = Backend.systemSolver(Omegamp(k), MDMmp, nLayers, cumLomp);
+  [BCI, Hamat, w1_c, ~, Smat, Hbmat, SCALE] = Lib.systemSolver(Omegamp(k), MDMmp, nLayers, cumLomp);
   %% ==================================================================== %%
   
     for que = simConfigMat(12):simConfigMat(12)+1 % x-position loop
       % Finding the solution at the boundary interfaces either side of the
       % thermophone layer
-      field = Backend.interrogationOptim(Hamat, Hbmat, Smat, cumLo, que, nLayers, BCI, SCALE);
+      field = Lib.interrogationOptim(Hamat, Hbmat, Smat, cumLo, que, nLayers, BCI, SCALE);
       lpM(que)   = field(1, :);
       lvM(que)   = field(2, :);
       lqM(que)   = field(3, :);
@@ -79,7 +79,7 @@ parfor k = 1:maxO
   % These are needed to determine the propagation from the front and back
   % boundaries
   
-  field = Backend.interrogationOptim(Hamat, Hbmat, Smat, cumLo, ...
+  field = Lib.interrogationOptim(Hamat, Hbmat, Smat, cumLo, ...
     cumLo(1)-(2 * (kTop / (2 * CpTop * Omega(k) * rhoTop))^0.5), nLayers, BCI, SCALE);
   lpM(1) = field(1, :);
   lvM(1) = field(2, :);
@@ -87,7 +87,7 @@ parfor k = 1:maxO
   lTM(1) = field(4, :);
   lT_Mm(1) = field(5, :);
   
-  field = Backend.interrogationOptim(Hamat, Hbmat, Smat, cumLo, ...
+  field = Lib.interrogationOptim(Hamat, Hbmat, Smat, cumLo, ...
     cumLo(end)+(2 * (kTop / (2 * CpTop * Omega(k) * rhoTop))^0.5), nLayers, BCI, SCALE);
   lpM(nLayers+1) = field(1, :);
   lvM(nLayers+1) = field(2, :);
@@ -121,7 +121,7 @@ kay2 = double(kay2);
   eta_aco_1, eta_aco_2, ...
   eta_Conv_1, eta_Conv_2, ...
   eta_Tot_1, eta_Tot_2] = ...
-  Backend.efficiencyCalc(qM, vM, simConfigMat(12), nLayers, ...
+  Lib.efficiencyCalc(qM, vM, simConfigMat(12), nLayers, ...
   sum(MDM(:, LP.L).*MDM(:, +LP.sL:+LP.sR), 'all', 'omitnan'), MDM);
 
 % Array with all the different efficiency calculations collated together
@@ -131,7 +131,7 @@ ETA2 = [eta_TP_2, eta_Therm, eta_aco_2, ones(size(eta_aco_1)) .* eta_Conv_2, eta
 % Calculation of the acoustic propagation
 [Mag_Pff_1, Mag_Prms_ff_1, Mag_Prms_nf_ff_1, Ph_Pff_1, ...
   Mag_Pff_2, Mag_Prms_ff_2, Mag_Prms_nf_ff_2, Ph_Pff_2] = ...
-  Backend.rayleighFunc(Ny, Nz, simConfigMat, MDM, kay1, kay2, vM, cumLo, maxO, Omega);
+  Lib.rayleighFunc(Ny, Nz, simConfigMat, MDM, kay1, kay2, vM, cumLo, maxO, Omega);
 
 % Array with all the different Pressure calculations collated together
 PRES1 = [Mag_Pff_1.', Mag_Prms_ff_1.', Mag_Prms_nf_ff_1.', Ph_Pff_1.'];
@@ -140,10 +140,10 @@ PRES2 = [Mag_Pff_2.', Mag_Prms_ff_2.', Mag_Prms_nf_ff_2.', Ph_Pff_2.'];
 %% Create output object
 % TODO: add the results as they are computed.
 %{
-p = string(properties(ThermophoneSimResults)).';
+p = string(properties(ThermophoneModels.SimulationResults)).';
 disp(join(reshape(["""" + p + """"; p],[],1), ', '));
 %}
-results = ThermophoneSimResults("ETA1", ETA1, "ETA2", ETA2, "PRES1", PRES1, "PRES2", PRES2, ...
+results = ThermophoneModels.SimulationResults("ETA1", ETA1, "ETA2", ETA2, "PRES1", PRES1, "PRES2", PRES2, ...
   "T", T, "q", q, "v", v, "p", p, "TM", TM, "qM", qM, "vM", vM, "pM", pM, "T_m", T_m, ...
   "T_Mm", T_Mm, "Omega", Omega, "Posx", Posx, "cumLo", cumLo, "layers", layers);
 %{

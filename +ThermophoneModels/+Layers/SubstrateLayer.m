@@ -1,4 +1,4 @@
-classdef SubstrateLayer < LayerModels.Layer
+classdef SubstrateLayer < ThermophoneModels.Layers.Layer
   %SUBSTRATELAYER The substrate layer is any other non-thermophone layer that 
   %provides a structural base upon which thermophone layers are built.
   
@@ -12,7 +12,7 @@ classdef SubstrateLayer < LayerModels.Layer
     %% Constructor
     function layerObj = SubstrateLayer(props)
       arguments
-        props.?LayerModels.SubstrateLayer
+        props.?ThermophoneModels.Layers.SubstrateLayer
       end
       
       %% Special initialization:
@@ -25,7 +25,7 @@ classdef SubstrateLayer < LayerModels.Layer
       
       %% Create superclass:
       propsKV = namedargs2cell(rmfield(props, 'Y'));
-      layerObj = layerObj@LayerModels.Layer(propsKV{:});
+      layerObj = layerObj@ThermophoneModels.Layers.Layer(propsKV{:});
       
       %% Custom modifications:
       % Bring back the field(s) not passed to the superclass constructor
@@ -41,7 +41,7 @@ classdef SubstrateLayer < LayerModels.Layer
   methods
     
     function set.Y(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
     
   end

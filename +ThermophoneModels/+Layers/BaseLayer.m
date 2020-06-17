@@ -1,7 +1,7 @@
-classdef InsulationLayer < LayerModels.Layer
-  %INSULATIONLAYER A layer whose sole purpose is to provide electrical insulation
-  %between a thermophone layer and another layer.
-
+classdef BaseLayer < ThermophoneModels.Layers.Layer
+  %BASELAYER A solid layer that is situated at the very bottom of a thermophone,
+  %stack and is therefore modelled as a semi-infinite layer.
+  
   properties (GetAccess = public, SetAccess = public)
     % Subclass-specific properties
     
@@ -9,14 +9,14 @@ classdef InsulationLayer < LayerModels.Layer
   
   methods (Access = public)
     %% Constructor
-    function layerObj = InsulationLayer(props)
+    function layerObj = BaseLayer(props)
       arguments
-        props.?LayerModels.InsulationLayer
+        props.?ThermophoneModels.Layers.BaseLayer
       end
       
       % Create superclass:
       propsKV = namedargs2cell(props);
-      layerObj = layerObj@LayerModels.Layer(propsKV{:});
+      layerObj = layerObj@ThermophoneModels.Layers.Layer(propsKV{:});
       
       % Custom modifications:
       

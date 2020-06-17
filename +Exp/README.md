@@ -1,6 +1,7 @@
 # Multilayer model of thermoacoustic sound generation in steady periodic operation
+# Thermophone experiment post-processing 
 
-Code for simulating thermophones, based upon 
+Incorporates Code for simulating thermophones, based upon 
 
 > Guiraud, Pierre, et al. "_Multilayer modeling of thermoacoustic sound generation for thermophone analysis and design._" Journal of Sound and Vibration 455 (2019): 275-298. [DOI](https://doi.org/10.1016/j.jsv.2019.05.001)
 
@@ -10,7 +11,36 @@ The implemented model considers:
 * Boundary generation
 * Convective losses
 
-This simulator uses the non-free Multiprecision Computing Toolbox for MATLAB (aka `mp` toolbox) to perform some computations that require increased precision.
+Also incorporates the facility to retroactively calculate boundary layer conditions from experimental measurements. The code reads the experimental output files which contain the following measurements, and calibrates if necessary:
+
+* Circuit voltages (Volts)
+* Circuit resistances (Ohms)
+* Microphone readings (Pa)
+* Accelerometer readings (m/s2)
+* Thermopile heat flux (W/m2)
+* Thermocouple readings (C)
+* Ambient pressure readings (Pa)
+
+The code outputs the heat-flux at the boundary due to the thermophone, as well as the work done by the vibrating 'solid-drive', and finds the ratio between them. In parallel, the code 'simulates' the experiment with the thermophone model in order to provide a prediction.
+
+--------------
+
+## How to use the code:
+
+The code is run by executing the thermophoneExperimentExample.m code. Within this file, the filename identifier of the experimental data is input. 
+
+The code automatically checks for additional datafiles that have the same name (the overflow due to large data samples).  
+
+The experimental thermophone design is input into the verificationCase_exp.m code. The code automatically calculates the power input and updates the power setting in the verification case. The code therefore simulates the case in parallel to processing the data in order to provide insight into the physics.
+
+Sensor calibration parameters can be changed in the CalibOpts.m code. The results file and definitions can be found in ThermophoneEXPResults.m file.
+
+
+--------------
+
+## Prerequisites
+
+The simulator uses the non-free Multiprecision Computing Toolbox for MATLAB (aka `mp` toolbox) to perform some computations that require increased precision.
 
 Contents:
 
@@ -89,20 +119,4 @@ in the order in which they appear. The column inputs are as follows:
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14;...%(layer 3)
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]; %(layer 4)
     ```
-
-1. **Running in `parfor` mode**  
-If `solutionFunc` is configured to run using `parfor`, it is necessary to initialize the `mp` toolbox on each node (i.e. worker of the parallel pool) using the following commands:
-
-    ```matlab
-    gcp(); % Create a pool with the default settings (if needed)
-    spmd   % Issue commands to all workers in pool (Single Program, Multiple Data)
-      warning('off', 'MATLAB:nearlySingularMatrix') % Precision warning toggle
-      mp.Digits(50);                                % mp toolbox precision setup
-    end
-    ```
-
-1. **Enabling/disabling the progress bar**  
-A progress bar visualizes the progress of loop `for` or `parfor` A progress bar is always associated with some overhead, however, in cases where individual loop iterations are very short (i.e. the "business logic" takes a short time to execute), the overhead can be the main performance sink - as happens in this case - which is why it is commented out in the code. 
-
-    The `ParforProgressbar` utility is bundled with the code as a Git submodule. To enable `progressbar` one must add it to MATLAB's path (e.g. `addpath(fullfile(pwd, 'progressbar'));`), and uncomment the lines related to `ppm` in `solutionFunc.m` (3 lines in total).
     

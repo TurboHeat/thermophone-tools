@@ -6,15 +6,15 @@ MDM = layers.toMatrix();
 %% Constants
 TOP = 1; % This represents the top or "first" layer.
 BOT = nLayers; % This represents the bottom, or "last" layer.
-% Dirty hack so we could use a shorter name ("LP") instead of "LayerModels.LayerPropEnum":
-LP = enumeration('LayerModels.LayerPropEnum'); LP = [cellstr(LP), num2cell(LP)].'; LP = struct(LP{:});
+% Dirty hack so we could use a shorter name ("LP") instead of "ThermophoneModels.Layers.LayerPropEnum":
+LP = enumeration('ThermophoneModels.Layers.LayerPropEnum'); LP = [cellstr(LP), num2cell(LP)].'; LP = struct(LP{:});
 
 %% Cumulative thickness
 cumLo = layers.getCumulativeThickness();
 cumLo = [cumLo(1); cumLo]; % fix for indexing in the boundary conditions calculation later
 
 %% Steady-State mean temperature calculation
-[mBCI] = Backend.meanTemperature(double(MDM), double(nLayers), double(cumLo), double(simConfigMat));
+[mBCI] = Sim.backend.meanTemperature(double(MDM), double(nLayers), double(cumLo), double(simConfigMat));
 
 %% ==================================================================== %%
 
@@ -64,7 +64,7 @@ parfor k = 1:maxO
   [lpM, lTM, lvM, lqM, lT_Mm] = deal(complex(zeros(1, nLayers+1)));
   
   % Function that solves the boundary conditions dan finds the matrix of constants (solutions) for each layer
-  [BCI, Hamat, w1_c, ~, Smat, Hbmat, SCALE] = Backend.systemSolver(Omegamp(k), MDMmp, nLayers, cumLomp);
+  [BCI, Hamat, w1_c, ~, Smat, Hbmat, SCALE] = Lib.systemSolver(Omegamp(k), MDMmp, nLayers, cumLomp);
 
   %% ==================================================================== %%  
   if d13 == 1
@@ -73,7 +73,7 @@ parfor k = 1:maxO
     % of the result, this loop can be removed.
     for que = 1:Nq % x-position loop
       % Applying the solution to a specific x-location (not vital)
-      field = Backend.interrogation(Hamat, Hbmat, Smat, cumLo, Posx(que), nLayers, BCI, mBCI, SCALE, MDM);
+      field = Sim.backend.interrogation(Hamat, Hbmat, Smat, cumLo, Posx(que), nLayers, BCI, mBCI, SCALE, MDM);
       p(k, que)   = field(1, :);
       v(k, que)   = field(2, :);
       q(k, que)   = field(3, :);
@@ -83,7 +83,7 @@ parfor k = 1:maxO
 
     for que = 2:nLayers % x-position loop
       % Finding the solution at the boundary interfaces (not vital)
-      field = Backend.interrogation(Hamat, Hbmat, Smat, cumLo, que, nLayers, BCI, mBCI, SCALE, MDM);
+      field = Sim.backend.interrogation(Hamat, Hbmat, Smat, cumLo, que, nLayers, BCI, mBCI, SCALE, MDM);
       lpM(que)   = field(1, :);
       lvM(que)   = field(2, :);
       lqM(que)   = field(3, :);
@@ -99,7 +99,7 @@ parfor k = 1:maxO
   % These are needed to determine the propagation from the front and back
   % boundaries
   
-  field = Backend.interrogation(Hamat, Hbmat, Smat, cumLo, ...
+  field = Sim.backend.interrogation(Hamat, Hbmat, Smat, cumLo, ...
     cumLo(1)-(2 * (kTop / (2 * CpTop * Omega(k) * rhoTop))^(1 / 2)), nLayers, BCI, mBCI, SCALE, MDM);
   lpM(1) = field(1, :);
   lvM(1) = field(2, :);
@@ -107,7 +107,7 @@ parfor k = 1:maxO
   lTM(1) = field(4, :);
   lT_Mm(1) = field(5, :);
   
-  field = Backend.interrogation(Hamat, Hbmat, Smat, cumLo, ...
+  field = Sim.backend.interrogation(Hamat, Hbmat, Smat, cumLo, ...
     cumLo(end)+(2 * (kTop / (2 * CpTop * Omega(k) * rhoTop))^(1 / 2)), nLayers, BCI, mBCI, SCALE, MDM);
   lpM(nLayers+1) = field(1, :);
   lvM(nLayers+1) = field(2, :);
@@ -141,7 +141,7 @@ kay2 = double(kay2);
   eta_aco_1, eta_aco_2, ...
   eta_Conv_1, eta_Conv_2, ...
   eta_Tot_1, eta_Tot_2] = ...
-  Backend.efficiencyCalc(qM, vM, simConfigMat(12), nLayers, ...
+  Lib.efficiencyCalc(qM, vM, simConfigMat(12), nLayers, ...
   sum(MDM(:, LP.L).*MDM(:, +LP.sL:+LP.sR), 'all', 'omitnan'), MDM);
 
 % Array with all the different efficiency calculations collated together
@@ -151,7 +151,7 @@ ETA2 = [eta_TP_2, eta_Therm, eta_aco_2, ones(size(eta_aco_1)) .* eta_Conv_2, eta
 % Calculation of the acoustic propagation
 [Mag_Pff_1, Mag_Prms_ff_1, Mag_Prms_nf_ff_1, Ph_Pff_1, ...
   Mag_Pff_2, Mag_Prms_ff_2, Mag_Prms_nf_ff_2, Ph_Pff_2] = ...
-  Backend.rayleighFunc(Ny, Nz, simConfigMat, MDM, kay1, kay2, vM, cumLo, maxO, Omega);
+  Lib.rayleighFunc(Ny, Nz, simConfigMat, MDM, kay1, kay2, vM, cumLo, maxO, Omega);
 
 % Array with all the different Pressure calculations collated together
 PRES1 = [Mag_Pff_1.', Mag_Prms_ff_1.', Mag_Prms_nf_ff_1.', Ph_Pff_1.'];
@@ -160,10 +160,10 @@ PRES2 = [Mag_Pff_2.', Mag_Prms_ff_2.', Mag_Prms_nf_ff_2.', Ph_Pff_2.'];
 %% Create output object
 % TODO: add the results as they are computed.
 %{
-p = string(properties(ThermophoneSimResults)).';
+p = string(properties(ThermophoneModels.SimulationResults)).';
 disp(join(reshape(["""" + p + """"; p],[],1), ', '));
 %}
-results = ThermophoneSimResults("ETA1", ETA1, "ETA2", ETA2, "PRES1", PRES1, "PRES2", PRES2, ...
+results = ThermophoneModels.SimulationResults("ETA1", ETA1, "ETA2", ETA2, "PRES1", PRES1, "PRES2", PRES2, ...
   "T", T, "q", q, "v", v, "p", p, "TM", TM, "qM", qM, "vM", vM, "pM", pM, "T_m", T_m, ...
   "T_Mm", T_Mm, "Omega", Omega, "Posx", Posx, "cumLo", cumLo, "layers", layers);
 %{

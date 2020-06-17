@@ -1,7 +1,7 @@
-classdef FluidLayer < LayerModels.Layer
-  %FLUIDLAYER A layer representing some gas/liquid in which sound propagtes
-  % This is the only type of layer where lambda and mu cannot be set to 0.
-  
+classdef OtherLayer < ThermophoneModels.Layers.Layer
+  %OTHERLAYER A layer that doesn't fit in other categories (for e.g. a glue/bonding
+  %layer that joins smooth and rough surfaces together).
+
   properties (GetAccess = public, SetAccess = public)
     % Subclass-specific properties
     
@@ -9,14 +9,14 @@ classdef FluidLayer < LayerModels.Layer
   
   methods (Access = public)
     %% Constructor
-    function layerObj = FluidLayer(props)
+    function layerObj = OtherLayer(props)
       arguments
-        props.?LayerModels.FluidLayer
+        props.?ThermophoneModels.Layers.OtherLayer
       end
       
       % Create superclass:
       propsKV = namedargs2cell(props);
-      layerObj = layerObj@LayerModels.Layer(propsKV{:});
+      layerObj = layerObj@ThermophoneModels.Layers.Layer(propsKV{:});
       
       % Custom modifications:
       

@@ -81,17 +81,8 @@ in the order in which they appear. The column inputs are as follows:
     |   14   |  _T<sub>0</sub>_ | Internal mean temperature     |      [K]       |
     |   15   |  _h<sub>R</sub>_ | Rt. edge heat transfer coeff. |  [W m⁻¹ K⁻²]   |
 
-    ### Visualized example structure
-
-    ```matlab
-    MDM = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14;...%(layer 1)
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14;...%(layer 2)
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14;...%(layer 3)
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]; %(layer 4)
-    ```
-
 1. **Running in `parfor` mode**  
-If `solutionFunc` is configured to run using `parfor`, it is necessary to initialize the `mp` toolbox on each node (i.e. worker of the parallel pool) using the following commands:
+If `Sim.backend.solutionFunc` is configured to run using `parfor`, it is necessary to initialize the `mp` toolbox on each node (i.e. worker of the parallel pool) using the following commands:
 
     ```matlab
     gcp(); % Create a pool with the default settings (if needed)

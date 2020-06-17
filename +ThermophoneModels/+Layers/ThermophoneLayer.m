@@ -1,4 +1,4 @@
-classdef ThermophoneLayer < LayerModels.Layer
+classdef ThermophoneLayer < ThermophoneModels.Layers.Layer
   %THERMOPHONELAYER A layer representing the electrically conductive material where
   %power is put in.
   
@@ -12,7 +12,7 @@ classdef ThermophoneLayer < LayerModels.Layer
     %% Constructor
     function layerObj = ThermophoneLayer(props)
       arguments
-        props.?LayerModels.ThermophoneLayer
+        props.?ThermophoneModels.Layers.ThermophoneLayer
       end
       
       %% Special initialization:
@@ -25,7 +25,7 @@ classdef ThermophoneLayer < LayerModels.Layer
       
       %% Create superclass:
       propsKV = namedargs2cell(rmfield(props, 'Y'));
-      layerObj = layerObj@LayerModels.Layer(propsKV{:});
+      layerObj = layerObj@ThermophoneModels.Layers.Layer(propsKV{:});
       
       %% Custom modifications:
       % Bring back the field(s) not passed to the superclass constructor
@@ -41,7 +41,7 @@ classdef ThermophoneLayer < LayerModels.Layer
   methods
     
     function set.Y(obj, val)
-      obj.(LayerModels.Layer.protectedSet(dbstack('-completenames'))) = val;
+      obj.(ThermophoneModels.Layers.Layer.protectedSet(dbstack('-completenames'))) = val;
     end
     
   end
