@@ -36,7 +36,7 @@ classdef ComputationOptions
       % Copy field contents into object properties
       fn = fieldnames(optsKW);
       for idxF = 1:numel(fn)
-        optsObj.(fn{idxF}) = props.(fn{idxF});
+        optsObj.(fn{idxF}) = optsKW.(fn{idxF});
       end      
     end
     

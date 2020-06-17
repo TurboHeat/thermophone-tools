@@ -23,9 +23,7 @@ end
 function [results] = thermophoneExperimentExample()
 
 %% Configure simulation options:
-expOpts = ThermophoneModels.ComputationOptions(); % options object with default settings, details can be changed later
-expOpts.N_Omega = 1; % Example of "changing it later"
-% simOpts.optim = 0; % Example of "changing it later"
+expOpts = ThermophoneModels.ComputationOptions('Ly',0.1,'Lz',0.1,'optim',true,'N_Omega',1);
 [configs] = Exp.verificationCases();
 
 %% Prepare the solver
