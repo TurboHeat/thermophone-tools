@@ -2,13 +2,13 @@ classdef CalibrationOptions < handle
   % CALIBRATIONOPTIONS Simple data class for holding the calibration options
   
   properties (GetAccess = public, SetAccess = private)
-    % TODO: add references for these values:
+    % The values below were taken from \\TurboLab\Laboratory Administration\Manuals\...
+    % ...\Heat Exchanger Test Rig\G.R.A.S Microphone\Microphone - Calibration Chart.pdf:
     Mic (1,1) double  = 3.41;    % Microphone calibration [mV/Pa]
-    Acc (1,1) double  = 10.2;    % Accelerometer calibration [mV/m/s2]
-    
-    % Thermopile (heat flux sensor) calibration 
-    %  (https://turbo-heat.slack.com/archives/C010AC9H00K/p1592302486042500):
-    S (1,1) double    = 1.36E-6; % Heat flux sensor sensitivity [V/(W/m2)]
+    % ...Thermophone\\Wilcoxon‏ Accelerometer 736\Calibration and Data Sheet.pdf:
+    Acc (1,1) double  = 10.2;    % Accelerometer sensitivity [mV/m/s2]       
+    % ...Thermophone\\Heat Flux Sensor\Calibration‏.pdf:
+    S (1,1) double    = 1.36E-6; % Heat flux sensor ("thermopile") sensitivity [V/(W/m2)]
     Tcal (1,1) double = NaN;     % Sensor temperature at time of calibration [C]
     P (1,1) double    = 0.16E5;  % Pressure sensor calibration [Pa/V]    
     MF (1,1) double   = 0.00334; % Sensitivity Multiplication Factor
